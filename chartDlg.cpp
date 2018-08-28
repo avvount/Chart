@@ -79,6 +79,7 @@ BOOL CchartDlg::OnInitDialog()
     m_List.InsertColumn(3,"第三组"); 
     m_List.InsertColumn(4,"第四组"); 
     m_List.InsertColumn(5,"第五组"); 
+
 	CRect rect;  
 	m_List.GetClientRect(rect); //获得当前客户区信息  
 	m_List.SetColumnWidth(0, rect.Width() / 8);
