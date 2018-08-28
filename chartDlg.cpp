@@ -38,6 +38,8 @@ BEGIN_MESSAGE_MAP(CchartDlg, CDialog)
 	//}}AFX_MSG_MAP
     ON_BN_CLICKED(ID_GENERATE, &CchartDlg::OnBnClickedGenerate)
     ON_WM_LBUTTONDOWN()
+//	ON_WM_SIZE()
+ON_WM_SIZE()
 END_MESSAGE_MAP()
 
 
@@ -70,22 +72,22 @@ BOOL CchartDlg::OnInitDialog()
     m_List.ModifyStyle( 0, LVS_REPORT );               // 报表模式  
     m_List.SetExtendedStyle(m_List.GetExtendedStyle() | LVS_EX_GRIDLINES 
         | LVS_EX_FULLROWSELECT);  
-
+	
     m_List.InsertColumn(0,"编号");  
     m_List.InsertColumn(1,"第一组"); 
     m_List.InsertColumn(2,"第二组"); 
     m_List.InsertColumn(3,"第三组"); 
     m_List.InsertColumn(4,"第四组"); 
     m_List.InsertColumn(5,"第五组"); 
-    CRect rect;  
-    m_List.GetClientRect(rect); //获得当前客户区信息  
-    m_List.SetColumnWidth(0, rect.Width() / 7);
+	CRect rect;  
+	m_List.GetClientRect(rect); //获得当前客户区信息  
+	m_List.SetColumnWidth(0, rect.Width() / 8);
 
-    for (int i=1;i<6;i++)
-    {
-        m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
-    }
-    
+	for (int i=1;i<6;i++)
+	{
+		m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
+	}
+
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -116,6 +118,8 @@ void CchartDlg::OnPaint()
 	{
 		CDialog::OnPaint();
 	}
+	
+
 }
 
 //当用户拖动最小化窗口时系统调用此函数取得光标
@@ -129,9 +133,20 @@ HCURSOR CchartDlg::OnQueryDragIcon()
 void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
+
+	if (m_pData)
+	{
+		for (int i=0;i<m_Quantity;i++)
+		{
+			delete [] m_pData[i];
+		}
+		delete []m_pData;
+		m_List.DeleteAllItems();
+	}
     CString str;
     m_Quantity=GetDlgItemInt(IDC_COMBO_Quantity);
     m_Groups=GetDlgItemInt(IDC_COMBO_GROUPS);
+	
     if ((m_Quantity<1||m_Quantity>50)||(m_Groups<1||m_Groups>5))
     {
         if (m_Quantity<1||m_Quantity>50)
@@ -147,49 +162,40 @@ void CchartDlg::OnBnClickedGenerate()
     } 
     else
     {
-        m_pData=new int* [m_Groups];
-        for (int i=0;i<m_Groups;i++)
-        {
-            m_pData[i]=new int[m_Quantity];
-            for (int j=0;j<m_Quantity;j++)
-            {
-                m_pData[i][j]=rand() % 21-10;
-                
-                
-            }
-        }
+        m_pData=new int* [m_Quantity];
         for (int i=0;i<m_Quantity;i++)
         {
-            
-            str.Format("%d",i+1);
-            m_List.InsertItem(i,str);
-            if (m_Quantity%2)
-            {
-                m_List.SetTextBkColor(RGB(255,0,25));
-            }
-            else    
-            {
-                m_List.SetTextBkColor(RGB(0,125,100));
-            }
-            
+			str.Format("%d",i+1);
+			m_List.InsertItem(i,str);
+            m_pData[i]=new int[m_Groups];
             for (int j=0;j<m_Groups;j++)
             {
-                str.Format("%d",m_pData[j][i]);
-                m_List.SetItemText(i, j+1, str);
+                m_pData[i][j]=rand() % 21-10;
+				str.Format("%d",m_pData[i][j]);
+				m_List.SetItemText(i, j+1, str);
             }
-            
-            for (int j=m_Groups;j<5;j++)
-            {
-                m_List.SetItemText(i, j+1, "0");
-            }
-      /*  str.Format("%d",m_pData[i][j]);
-        
-        m_List.SetTextBkColor()*/
+			for (int j=m_Groups;j<5;j++)
+			{
+				m_List.SetItemText(i, j+1, "0");
+			}
         }
-          
-       
     }
-    
+	CRect rectListCtrl,rectWindow,rectDrawing;
+
+	GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
+	GetClientRect(&rectWindow);
+	rectDrawing.top=rectListCtrl.bottom+30;
+	rectDrawing.bottom=rectWindow.bottom-10;
+	rectDrawing.left=rectWindow.left+10;
+	rectDrawing.right=rectWindow.right-10;
+
+
+	CClientDC dc(this);
+	dc.MoveTo(rectDrawing.left,rectDrawing.top);
+	dc.LineTo(rectDrawing.right,rectDrawing.top);
+	dc.LineTo(rectDrawing.right,rectDrawing.bottom);
+	dc.LineTo(rectDrawing.left,rectDrawing.bottom);
+	dc.LineTo(rectDrawing.left,rectDrawing.top);
     
 }
 
@@ -197,4 +203,32 @@ void CchartDlg::OnLButtonDown(UINT nFlags, CPoint point)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
     CDialog::OnLButtonDown(nFlags, point);
+}
+
+
+
+void CchartDlg::OnSize(UINT nType, int cx, int cy)
+{
+	CDialog::OnSize(nType, cx, cy);
+
+	// TODO: 在此处添加消息处理程序代码
+
+	if (m_List)
+	{
+		CRect  rect; 
+		//GetWindowRect(&rect);  //获取窗口rect，
+		//ScreenToClient(rect);  //从窗口尺寸转换到用户区rect
+		GetClientRect(&rect);
+		rect.top+=25;
+		rect.bottom=(rect.bottom+rect.top)/3;
+		m_List.MoveWindow(&rect,true); 
+
+		m_List.SetColumnWidth(0, cx / 8);
+
+		for (int i=1;i<6;i++)
+		{
+			m_List.SetColumnWidth(i, cx / 6); //设置列的宽度。  
+		}
+	}
+	
 }

@@ -37,4 +37,6 @@ public:
     int** m_pData;
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
     CListCtrl m_List;
+//	afx_msg void OnSize(UINT nType, int cx, int cy);
+	afx_msg void OnSize(UINT nType, int cx, int cy);
 };
