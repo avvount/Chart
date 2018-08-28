@@ -7,6 +7,7 @@
 #include "afxcmn.h"
 
 
+
 // CchartDlg ¶Ô»°¿ò
 class CchartDlg : public CDialog
 {
