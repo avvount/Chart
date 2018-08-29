@@ -23,6 +23,12 @@ CchartDlg::CchartDlg(CWnd* pParent /*=NULL*/)
     , m_pData(NULL)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+    m_clrD=RGB(0,0,0);
+    m_clrL1=RGB(0,0,255);
+    m_clrL2=RGB(0,255,0);
+    m_clrL3=RGB(255,0,0);
+    m_clrL4=RGB(255,0,255);
+    m_clrL5=RGB(0,255,255);
 }
 
 void CchartDlg::DoDataExchange(CDataExchange* pDX)
@@ -75,7 +81,6 @@ BOOL CchartDlg::OnInitDialog()
     m_List.ModifyStyle( 0, LVS_REPORT );               // 报表模式  
     m_List.SetExtendedStyle(m_List.GetExtendedStyle() | LVS_EX_GRIDLINES 
         | LVS_EX_FULLROWSELECT);  
-	
     m_List.InsertColumn(0,"编号");  
     m_List.InsertColumn(1,"第一组"); 
     m_List.InsertColumn(2,"第二组"); 
@@ -133,6 +138,7 @@ void CchartDlg::OnPaint()
 		CDialog::OnPaint();
 	}
 	ResizeList();
+    DrawLine();
 
 }
 
@@ -148,6 +154,7 @@ void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
     GenerateList();
+    DrawLine();
 
 }
 
@@ -176,85 +183,28 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
 	
 }
 
-void CchartDlg::DrawLine(void)
-{
-
-    if (!m_List.GetItemCount())
-    {
-        return;
-    }
-    CRect rectListCtrl,rectWindow,rectDrawing;
-
-    GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
-    GetClientRect(&rectWindow);
-    rectDrawing.top=rectListCtrl.bottom+30;
-    rectDrawing.bottom=rectWindow.bottom-40;
-    rectDrawing.left=rectWindow.left+30;
-    rectDrawing.right=rectWindow.right-20;
-    int y_middle=(rectDrawing.bottom+rectDrawing.top)/2;
-    CRect rectClear(rectDrawing.left-30,rectDrawing.top-30,rectDrawing.right+20
-        ,rectDrawing.bottom+20);
-
-    CClientDC dcPaint(this);
-    dcPaint.FillSolidRect(rectClear, RGB(255, 255, 255));
-    dcPaint.MoveTo(rectDrawing.left,rectDrawing.bottom);
-    dcPaint.LineTo(rectDrawing.left,rectDrawing.top);
-    dcPaint.LineTo(rectDrawing.left,y_middle);
-    dcPaint.LineTo(rectDrawing.right,y_middle);
-    dcPaint.TextOut(rectDrawing.left-20,rectDrawing.top,"10");
-    dcPaint.TextOut(rectDrawing.left-10,y_middle-5,"0");
-    dcPaint.TextOut(rectDrawing.left-20,rectDrawing.bottom-10,"-10");
-
-    int colorR=0;
-    int colorG=0;
-    int colorB=0;
-    for (int i=0;i<m_Groups;i++)
-    {
-        switch (i)
-        {
-        case 0:
-            colorR=0;
-            colorG=0;
-            colorB=255;
-            break;
-        case 1:
-            colorR=0;
-            colorG=255;
-            colorB=0;
-            break;
-        case 2:
-            colorR=255;
-            colorG=0;
-            colorB=0;
-            break;
-        case 3:
-            colorR=255;
-            colorG=0;
-            colorB=255;
-            break;
-        case 4:
-            colorR=0;
-            colorG=255;
-            colorB=255;
-            break;
-        }
-        CPen pen(PS_SOLID,1,RGB(colorR,colorG,colorB));
-        dcPaint.SelectObject(&pen);
-        dcPaint.MoveTo(rectDrawing.left+5
-            ,rectDrawing.bottom-(m_pData[0][i]+10)/20.0*rectDrawing.Height());
-        for (int j=1;j<m_Quantity;j++)
-        {
-            dcPaint.LineTo(rectDrawing.left+5+(float)j/(m_Quantity-1)*(rectDrawing.Width()-5)
-                ,rectDrawing.bottom-(m_pData[j][i]+10)/20.0*rectDrawing.Height());
-        }
-    }
-}
 
 void CchartDlg::OnSetting()
 {
     // TODO: 在此添加命令处理程序代码
     CSettingDialog dlg;
-    dlg.DoModal();
+    dlg.m_clrCoordinate=m_clrD;
+    dlg.m_clrLine1=m_clrL1;
+    dlg.m_clrLine2=m_clrL2;
+    dlg.m_clrLine3=m_clrL3;
+    dlg.m_clrLine4=m_clrL4;
+    dlg.m_clrLine5=m_clrL5;
+    if (IDOK==dlg.DoModal())
+    {
+        m_clrD=dlg.m_clrCoordinate;
+        m_clrL1=dlg.m_clrLine1;
+        m_clrL2=dlg.m_clrLine2;
+        m_clrL3=dlg.m_clrLine3;
+        m_clrL4=dlg.m_clrLine4;
+        m_clrL5=dlg.m_clrLine5;
+        DrawLine();
+    }
+    
 }
 
 void CchartDlg::ResizeList(void)
@@ -273,7 +223,7 @@ void CchartDlg::ResizeList(void)
         {
             m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
         }
-        DrawLine();
+        
     }
 }
 
@@ -358,5 +308,69 @@ void CchartDlg::GenerateList(void)
             m_Groups,t2-t1);
         m_wndStatusBar.SetPaneText(0,strStatusBar);
         DrawLine();
+    }
+}
+
+void CchartDlg::DrawLine(void)
+{
+
+    if (!m_List.GetItemCount())
+    {
+        return;
+    }
+
+    CRect rectListCtrl,rectWindow,rectDrawing;
+    GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
+    GetClientRect(&rectWindow);
+    rectDrawing.top=rectListCtrl.bottom+40;
+    rectDrawing.bottom=rectWindow.bottom-40;
+    rectDrawing.left=rectWindow.left+30;
+    rectDrawing.right=rectWindow.right-20;
+    int y_middle=(rectDrawing.bottom+rectDrawing.top)/2;
+    CRect rectClear(rectDrawing.left-30,rectDrawing.top-10,rectDrawing.right+20
+        ,rectDrawing.bottom+20);
+
+    CClientDC dcPaint(this);
+    dcPaint.FillSolidRect(rectClear, RGB(255,255,255));
+    CPen pen(PS_SOLID,1,m_clrD);
+    dcPaint.SelectObject(&pen);
+    dcPaint.MoveTo(rectDrawing.left,rectDrawing.bottom);
+    dcPaint.LineTo(rectDrawing.left,rectDrawing.top);
+    dcPaint.LineTo(rectDrawing.left,y_middle);
+    dcPaint.LineTo(rectDrawing.right,y_middle);
+    dcPaint.TextOut(rectDrawing.left-20,rectDrawing.top,"10");
+    dcPaint.TextOut(rectDrawing.left-10,y_middle-5,"0");
+    dcPaint.TextOut(rectDrawing.left-20,rectDrawing.bottom-10,"-10");
+
+    COLORREF clrTmp;
+    for (int i=0;i<m_Groups;i++)
+    {
+        switch (i)
+        {
+        case 0:
+            clrTmp=m_clrL1;
+            break;
+        case 1:
+            clrTmp=m_clrL2;
+            break;
+        case 2:
+            clrTmp=m_clrL3;
+            break;
+        case 3:
+            clrTmp=m_clrL4;
+            break;
+        case 4:
+            clrTmp=m_clrL5;
+            break;
+        }
+        CPen LinePen(PS_SOLID,1,clrTmp);
+        dcPaint.SelectObject(&LinePen);
+        dcPaint.MoveTo(rectDrawing.left+5
+            ,rectDrawing.bottom-(m_pData[0][i]+10)/20.0*rectDrawing.Height());
+        for (int j=1;j<m_Quantity;j++)
+        {
+            dcPaint.LineTo(rectDrawing.left+5+(float)j/(m_Quantity-1)*(rectDrawing.Width()-5)
+                ,rectDrawing.bottom-(m_pData[j][i]+10)/20.0*rectDrawing.Height());
+        }
     }
 }
