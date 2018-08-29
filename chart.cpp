@@ -10,13 +10,11 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CchartApp
 
 BEGIN_MESSAGE_MAP(CchartApp, CWinAppEx)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
+ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
-
 
 // CchartApp 构造
 
@@ -26,11 +24,9 @@ CchartApp::CchartApp()
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
-
 // 唯一的一个 CchartApp 对象
 
 CchartApp theApp;
-
 
 // CchartApp 初始化
 
