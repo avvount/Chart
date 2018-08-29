@@ -6,15 +6,14 @@
 #include "chart.h"
 #include "chartDlg.h"
 #include "SettingDialog.h"
+
+#define MAXQUANTITY	100
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
 
 
 // CchartDlg 对话框
-
-
-
 
 CchartDlg::CchartDlg(CWnd* pParent /*=NULL*/)
 	: CDialog(CchartDlg::IDD, pParent)
@@ -75,7 +74,7 @@ BOOL CchartDlg::OnInitDialog()
 
     CString strTemp;
     ((CComboBox*)GetDlgItem(IDC_COMBO_Quantity))->ResetContent();//消除现有所有内容
-    for(int i=1;i<=50;i++)
+    for(int i=1;i<=MAXQUANTITY;i++)
     {
         strTemp.Format("%d",i);
         ((CComboBox*)GetDlgItem(IDC_COMBO_Quantity))->AddString(strTemp);
@@ -94,7 +93,6 @@ BOOL CchartDlg::OnInitDialog()
 	CRect rect;  
 	m_List.GetClientRect(rect); //获得当前客户区信息  
 	m_List.SetColumnWidth(0, rect.Width() / 8);
-
 	for (int i=1;i<6;i++)
 	{
 		m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
@@ -174,7 +172,6 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
 	CDialog::OnSize(nType, cx, cy);
 
 	// TODO: 在此处添加消息处理程序代码
-
 	//ResizeList();
     if (m_wndStatusBar.GetSafeHwnd())
     {
@@ -219,38 +216,18 @@ void CchartDlg::ResizeList(void)
 {
     if (m_List)
     {
-        CRect  rect; 
+        CRect rect; 
         GetClientRect(&rect);
         rect.top+=25;
         rect.bottom=(rect.bottom+rect.top)/3;
         m_List.MoveWindow(&rect,true); 
-
         m_List.SetColumnWidth(0, rect.Width() / 8);
-
         for (int i=1;i<6;i++)
         {
             m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
         }
-        
     }
 }
-
-//void CchartDlg::OnMove(int x, int y)
-//{
-//    CDialog::OnMove(x, y);
-//    ResizeList();
-//    // TODO: 在此处添加消息处理程序代码
-//}
-
-//void CchartDlg::OnSysCommand(UINT nID, LPARAM lParam)
-//{
-//    // TODO: 在此添加消息处理程序代码和/或调用默认值
-//    if (nID==SC_ZOOM)
-//    {
-//        ResizeList();
-//    }
-//    CDialog::OnSysCommand(nID, lParam);
-//}
 
 void CchartDlg::GenerateList(void)
 {
@@ -264,23 +241,17 @@ void CchartDlg::GenerateList(void)
         delete []m_pData;
         m_List.DeleteAllItems();
     }
-    CString str;
+    
     m_Quantity=GetDlgItemInt(IDC_COMBO_Quantity);
     m_Groups=GetDlgItemInt(IDC_COMBO_GROUPS);
 
-    if ((m_Quantity<1||m_Quantity>50)||(m_Groups<1||m_Groups>5))
+	CString str;
+    if (m_Groups<1||m_Groups>5)
     {
-        if (m_Quantity<1||m_Quantity>50)
-        {
-            str+="数量为1~50\n";
-        }
-        if (m_Groups<1||m_Groups>5)
-        {
-            str+="组数为1~5\n";
-        }
-        MessageBox(str);
-        return ;
-    } 
+        str="组数应为1~5\n";
+		MessageBox(str);
+		return ;
+    }
     else
     {
         int t1=GetTickCount();
@@ -390,5 +361,4 @@ void CchartDlg::setLineColor(void)
             m_List.SetItemColor(i,RGB(0,0,0),m_clrOddLine);
         }
     }
-    
 }
