@@ -35,4 +35,10 @@ public:
     afx_msg void OnBnClickedLine3();
     afx_msg void OnBnClickedLine4();
     afx_msg void OnBnClickedLine5();
+    CMFCButton m_OddLine;
+    CMFCButton m_EvenLine;
+    COLORREF m_clrOddLine;
+    COLORREF m_clrEvenLine;
+    afx_msg void OnBnClickedOddline();
+    afx_msg void OnBnClickedEvenline();
 };

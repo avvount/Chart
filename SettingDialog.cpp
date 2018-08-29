@@ -13,12 +13,7 @@ IMPLEMENT_DYNAMIC(CSettingDialog, CDialog)
 CSettingDialog::CSettingDialog(CWnd* pParent /*=NULL*/)
 	: CDialog(CSettingDialog::IDD, pParent)
 {
-    m_clrCoordinate=RGB(0,0,0);
-    m_clrLine1=RGB(0,0,255);
-    m_clrLine2=RGB(0,255,0);
-    m_clrLine3=RGB(255,0,0);
-    m_clrLine4=RGB(255,0,255);
-    m_clrLine5=RGB(0,255,255);
+
 }
 
 CSettingDialog::~CSettingDialog()
@@ -34,6 +29,8 @@ void CSettingDialog::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_LINE3, m_Line3);
     DDX_Control(pDX, IDC_LINE4, m_Line4);
     DDX_Control(pDX, IDC_LINE5, m_Line5);
+    DDX_Control(pDX, IDC_ODDLINE, m_OddLine);
+    DDX_Control(pDX, IDC_EVENLINE, m_EvenLine);
 }
 
 
@@ -45,6 +42,8 @@ BEGIN_MESSAGE_MAP(CSettingDialog, CDialog)
     ON_BN_CLICKED(IDC_LINE3, &CSettingDialog::OnBnClickedLine3)
     ON_BN_CLICKED(IDC_LINE4, &CSettingDialog::OnBnClickedLine4)
     ON_BN_CLICKED(IDC_LINE5, &CSettingDialog::OnBnClickedLine5)
+    ON_BN_CLICKED(IDC_ODDLINE, &CSettingDialog::OnBnClickedOddline)
+    ON_BN_CLICKED(IDC_EVENLINE, &CSettingDialog::OnBnClickedEvenline)
 END_MESSAGE_MAP()
 
 
@@ -89,6 +88,8 @@ BOOL CSettingDialog::OnInitDialog()
     m_Line3.SetFaceColor(m_clrLine3);
     m_Line4.SetFaceColor(m_clrLine4);
     m_Line5.SetFaceColor(m_clrLine5);
+    m_OddLine.SetFaceColor(m_clrOddLine);
+    m_EvenLine.SetFaceColor(m_clrEvenLine);
     return 0;
 
 }
@@ -144,5 +145,27 @@ void CSettingDialog::OnBnClickedLine5()
     {
         m_clrLine5=clrdlg.m_cc.rgbResult;
         m_Line5.SetFaceColor(m_clrLine5);
+    }
+}
+
+void CSettingDialog::OnBnClickedOddline()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CColorDialog clrdlg;
+    if (IDOK==clrdlg.DoModal())
+    {
+        m_clrOddLine=clrdlg.m_cc.rgbResult;
+        m_OddLine.SetFaceColor(m_clrOddLine);
+    }
+}
+
+void CSettingDialog::OnBnClickedEvenline()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CColorDialog clrdlg;
+    if (IDOK==clrdlg.DoModal())
+    {
+        m_clrEvenLine=clrdlg.m_cc.rgbResult;
+        m_EvenLine.SetFaceColor(m_clrEvenLine);
     }
 }

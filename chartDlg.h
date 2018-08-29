@@ -52,4 +52,8 @@ private:
     void GenerateList(void);
 private:
     COLORREF m_clrD,m_clrL1,m_clrL2,m_clrL3,m_clrL4,m_clrL5;
+public:
+    COLORREF m_clrOddLine;
+    COLORREF m_clrEvenLine;
+    void setLineColor(void);
 };

@@ -29,6 +29,9 @@ CchartDlg::CchartDlg(CWnd* pParent /*=NULL*/)
     m_clrL3=RGB(255,0,0);
     m_clrL4=RGB(255,0,255);
     m_clrL5=RGB(0,255,255);
+    m_clrEvenLine=RGB(255,255,0);
+    m_clrOddLine=RGB(0,255,255);
+
 }
 
 void CchartDlg::DoDataExchange(CDataExchange* pDX)
@@ -194,6 +197,8 @@ void CchartDlg::OnSetting()
     dlg.m_clrLine3=m_clrL3;
     dlg.m_clrLine4=m_clrL4;
     dlg.m_clrLine5=m_clrL5;
+    dlg.m_clrOddLine=m_clrOddLine;
+    dlg.m_clrEvenLine=m_clrEvenLine;
     if (IDOK==dlg.DoModal())
     {
         m_clrD=dlg.m_clrCoordinate;
@@ -202,7 +207,10 @@ void CchartDlg::OnSetting()
         m_clrL3=dlg.m_clrLine3;
         m_clrL4=dlg.m_clrLine4;
         m_clrL5=dlg.m_clrLine5;
+        m_clrOddLine=dlg.m_clrOddLine;
+        m_clrEvenLine=dlg.m_clrEvenLine;
         DrawLine();
+        setLineColor();
     }
     
 }
@@ -292,17 +300,9 @@ void CchartDlg::GenerateList(void)
             {
                 m_List.SetItemText(i, j+1, "0");
             }
-            if (i%2)
-            {
-                m_List.SetItemColor(i,RGB(0,0,0),RGB(255,255,0));
-            }
-            else
-            {
-                m_List.SetItemColor(i,RGB(0,0,0),RGB(0,255,255));
-            }
-
         }
         int t2=GetTickCount();
+        setLineColor();
         CString strStatusBar;
         strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms",m_Quantity,
             m_Groups,t2-t1);
@@ -373,4 +373,22 @@ void CchartDlg::DrawLine(void)
                 ,rectDrawing.bottom-(m_pData[j][i]+10)/20.0*rectDrawing.Height());
         }
     }
+}
+
+void CchartDlg::setLineColor(void)
+{
+    for (int i=0;i<m_Quantity;i++)
+    {
+        if (i%2)
+        {
+            //偶数行
+            m_List.SetItemColor(i,RGB(0,0,0),m_clrEvenLine);
+        }
+        else
+        {
+            //奇数行
+            m_List.SetItemColor(i,RGB(0,0,0),m_clrOddLine);
+        }
+    }
+    
 }

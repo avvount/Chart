@@ -22,10 +22,9 @@ typedef struct
 class CNewListCtrl : public CListCtrl  
 {  
 public:  
-    void SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);   //设置某一行的前景色和背景色  
-    void SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);//设置全部行的前景色和背景色  
-    void ClearColor();                                                          //清除颜色映射表  
-
+    void SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);   //设置某一行的前景色和背景色
+    void SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);//设置全部行的前景色和背景色
+    void ClearColor();                                                          //清除颜色映射表
     // Construction  
 public:  
     CNewListCtrl();  
