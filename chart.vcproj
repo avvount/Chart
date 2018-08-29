@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\NewListCtrl.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\SettingDialog.cpp"
 				>
 			</File>
@@ -229,6 +233,10 @@
 			</File>
 			<File
 				RelativePath=".\chartDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\NewListCtrl.h"
 				>
 			</File>
 			<File

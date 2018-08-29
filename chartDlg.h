@@ -6,7 +6,7 @@
 #include "afxwin.h"
 #include "afxcmn.h"
 #include "afxext.h"
-
+#include "NewListCtrl.h"
 
 
 // CchartDlg ¶Ô»°¿ò
@@ -38,7 +38,7 @@ public:
     afx_msg void OnBnClickedGenerate();
     int** m_pData;
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-    CListCtrl m_List;
+    CNewListCtrl m_List;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
     void DrawLine(void);
 private:
@@ -48,6 +48,6 @@ public:
 private:
     void ResizeList(void);
 public:
-//    afx_msg void OnMove(int x, int y);
-//    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
+private:
+    void GenerateList(void);
 };

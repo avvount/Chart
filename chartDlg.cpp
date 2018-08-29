@@ -147,61 +147,7 @@ HCURSOR CchartDlg::OnQueryDragIcon()
 void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
-   /* Invalidate();
-    Invalidate(FALSE);*/
-	if (m_pData)
-	{
-		for (int i=0;i<m_Quantity;i++)
-		{
-			delete [] m_pData[i];
-		}
-		delete []m_pData;
-		m_List.DeleteAllItems();
-	}
-    CString str;
-    m_Quantity=GetDlgItemInt(IDC_COMBO_Quantity);
-    m_Groups=GetDlgItemInt(IDC_COMBO_GROUPS);
-	
-    if ((m_Quantity<1||m_Quantity>50)||(m_Groups<1||m_Groups>5))
-    {
-        if (m_Quantity<1||m_Quantity>50)
-        {
-            str+="数量为1~50\n";
-        }
-        if (m_Groups<1||m_Groups>5)
-        {
-            str+="组数为1~5\n";
-        }
-        MessageBox(str);
-        return ;
-    } 
-    else
-    {
-        int t1=GetTickCount();
-        m_pData=new int* [m_Quantity];
-        for (int i=0;i<m_Quantity;i++)
-        {
-			str.Format("%d",i+1);
-			m_List.InsertItem(i,str);
-            m_pData[i]=new int[m_Groups];
-            for (int j=0;j<m_Groups;j++)
-            {
-                m_pData[i][j]=rand() % 21-10;
-				str.Format("%d",m_pData[i][j]);
-				m_List.SetItemText(i, j+1, str);
-            }
-			for (int j=m_Groups;j<5;j++)
-			{
-				m_List.SetItemText(i, j+1, "0");
-			}
-        }
-        int t2=GetTickCount();
-        CString strStatusBar;
-        strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms",m_Quantity,
-            m_Groups,t2-t1);
-        m_wndStatusBar.SetPaneText(0,strStatusBar);
-        DrawLine();
-    }
+    GenerateList();
 
 }
 
@@ -347,3 +293,70 @@ void CchartDlg::ResizeList(void)
 //    }
 //    CDialog::OnSysCommand(nID, lParam);
 //}
+
+void CchartDlg::GenerateList(void)
+{
+
+    if (m_pData)
+    {
+        for (int i=0;i<m_Quantity;i++)
+        {
+            delete [] m_pData[i];
+        }
+        delete []m_pData;
+        m_List.DeleteAllItems();
+    }
+    CString str;
+    m_Quantity=GetDlgItemInt(IDC_COMBO_Quantity);
+    m_Groups=GetDlgItemInt(IDC_COMBO_GROUPS);
+
+    if ((m_Quantity<1||m_Quantity>50)||(m_Groups<1||m_Groups>5))
+    {
+        if (m_Quantity<1||m_Quantity>50)
+        {
+            str+="数量为1~50\n";
+        }
+        if (m_Groups<1||m_Groups>5)
+        {
+            str+="组数为1~5\n";
+        }
+        MessageBox(str);
+        return ;
+    } 
+    else
+    {
+        int t1=GetTickCount();
+        m_pData=new int* [m_Quantity];
+        for (int i=0;i<m_Quantity;i++)
+        {
+            str.Format("%d",i+1);
+            m_List.InsertItem(i,str);
+            m_pData[i]=new int[m_Groups];
+            for (int j=0;j<m_Groups;j++)
+            {
+                m_pData[i][j]=rand() % 21-10;
+                str.Format("%d",m_pData[i][j]);
+                m_List.SetItemText(i, j+1, str);
+            }
+            for (int j=m_Groups;j<5;j++)
+            {
+                m_List.SetItemText(i, j+1, "0");
+            }
+            if (i%2)
+            {
+                m_List.SetItemColor(i,RGB(0,0,0),RGB(255,255,0));
+            }
+            else
+            {
+                m_List.SetItemColor(i,RGB(0,0,0),RGB(0,255,255));
+            }
+
+        }
+        int t2=GetTickCount();
+        CString strStatusBar;
+        strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms",m_Quantity,
+            m_Groups,t2-t1);
+        m_wndStatusBar.SetPaneText(0,strStatusBar);
+        DrawLine();
+    }
+}
