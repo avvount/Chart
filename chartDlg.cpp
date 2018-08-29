@@ -5,7 +5,7 @@
 #include "stdafx.h"
 #include "chart.h"
 #include "chartDlg.h"
-
+#include "SettingDialog.h"
 #ifdef _DEBUG
 #define new DEBUG_NEW
 #endif
@@ -40,6 +40,9 @@ BEGIN_MESSAGE_MAP(CchartDlg, CDialog)
     ON_WM_LBUTTONDOWN()
 //	ON_WM_SIZE()
 ON_WM_SIZE()
+ON_COMMAND(IDM_SETTING, &CchartDlg::OnSetting)
+//ON_WM_MOVE()
+//ON_WM_SYSCOMMAND()
 END_MESSAGE_MAP()
 
 
@@ -91,13 +94,13 @@ BOOL CchartDlg::OnInitDialog()
 
     //创建状态栏
     static UINT indicators[]={ID_SEPARATOR};  
-    if(!m_wndStatusBar.Create(this)|| !m_wndStatusBar.SetIndicators(indicators,sizeof(indicators)/sizeof(UINT)))  
+    if(!m_wndStatusBar.Create(this)|| 
+        !m_wndStatusBar.SetIndicators(indicators,sizeof(indicators)/sizeof(UINT)))  
     {  
         TRACE0("Can't create status bar/n");  
         return false;  
     }  
-    m_wndStatusBar.MoveWindow(0,rect.bottom-20,rect.right,20);// 调整状态栏的位置和大小 
-
+    RepositionBars(AFX_IDW_CONTROLBAR_FIRST,AFX_IDW_CONTROLBAR_LAST,0);
 
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
@@ -129,7 +132,7 @@ void CchartDlg::OnPaint()
 	{
 		CDialog::OnPaint();
 	}
-	
+	ResizeList();
 
 }
 
@@ -174,6 +177,7 @@ void CchartDlg::OnBnClickedGenerate()
     } 
     else
     {
+        int t1=GetTickCount();
         m_pData=new int* [m_Quantity];
         for (int i=0;i<m_Quantity;i++)
         {
@@ -191,6 +195,11 @@ void CchartDlg::OnBnClickedGenerate()
 				m_List.SetItemText(i, j+1, "0");
 			}
         }
+        int t2=GetTickCount();
+        CString strStatusBar;
+        strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms",m_Quantity,
+            m_Groups,t2-t1);
+        m_wndStatusBar.SetPaneText(0,strStatusBar);
         DrawLine();
     }
 
@@ -210,30 +219,24 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
 
 	// TODO: 在此处添加消息处理程序代码
 
-	if (m_List)
-	{
-		CRect  rect; 
-		//GetWindowRect(&rect);  //获取窗口rect，
-		//ScreenToClient(rect);  //从窗口尺寸转换到用户区rect
-		GetClientRect(&rect);
-		rect.top+=25;
-		rect.bottom=(rect.bottom+rect.top)/3;
-		m_List.MoveWindow(&rect,true); 
-
-		m_List.SetColumnWidth(0, cx / 8);
-
-		for (int i=1;i<6;i++)
-		{
-			m_List.SetColumnWidth(i, cx / 6); //设置列的宽度。  
-		}
-        DrawLine();
-	}
+	//ResizeList();
+    if (m_wndStatusBar.GetSafeHwnd())
+    {
+        CRect  rect; 
+        GetClientRect(&rect);
+        rect.top=rect.bottom-20;
+        m_wndStatusBar.MoveWindow(&rect);
+    }
 	
 }
 
 void CchartDlg::DrawLine(void)
 {
 
+    if (!m_List.GetItemCount())
+    {
+        return;
+    }
     CRect rectListCtrl,rectWindow,rectDrawing;
 
     GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
@@ -300,3 +303,47 @@ void CchartDlg::DrawLine(void)
         }
     }
 }
+
+void CchartDlg::OnSetting()
+{
+    // TODO: 在此添加命令处理程序代码
+    CSettingDialog dlg;
+    dlg.DoModal();
+}
+
+void CchartDlg::ResizeList(void)
+{
+    if (m_List)
+    {
+        CRect  rect; 
+        GetClientRect(&rect);
+        rect.top+=25;
+        rect.bottom=(rect.bottom+rect.top)/3;
+        m_List.MoveWindow(&rect,true); 
+
+        m_List.SetColumnWidth(0, rect.Width() / 8);
+
+        for (int i=1;i<6;i++)
+        {
+            m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
+        }
+        DrawLine();
+    }
+}
+
+//void CchartDlg::OnMove(int x, int y)
+//{
+//    CDialog::OnMove(x, y);
+//    ResizeList();
+//    // TODO: 在此处添加消息处理程序代码
+//}
+
+//void CchartDlg::OnSysCommand(UINT nID, LPARAM lParam)
+//{
+//    // TODO: 在此添加消息处理程序代码和/或调用默认值
+//    if (nID==SC_ZOOM)
+//    {
+//        ResizeList();
+//    }
+//    CDialog::OnSysCommand(nID, lParam);
+//}

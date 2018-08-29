@@ -91,6 +91,23 @@ BEGIN
     CONTROL         "",IDC_LISTCTRL,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,0,13,418,96
 END
 
+IDD_SETTING_DIALOG DIALOGEX 0, 0, 386, 267
+STYLE DS_SETFONT | DS_MODALFRAME | DS_FIXEDSYS | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "设置"
+FONT 8, "MS Shell Dlg", 400, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "确定",IDOK,260,246,50,14
+    PUSHBUTTON      "取消",IDCANCEL,329,246,50,14
+    GROUPBOX        "配色方案",IDC_STATIC,7,47,372,194
+    GROUPBOX        "画线",IDC_STATIC,15,56,357,58
+    GROUPBOX        "列表背景",IDC_STATIC,15,123,357,40
+    GROUPBOX        "其它",IDC_STATIC,15,172,357,40
+    GROUPBOX        "示例",IDC_STATIC,7,7,372,40
+    PUSHBUTTON      "默认方案",IDC_BUTTON1,21,218,50,14
+    PUSHBUTTON      "灰度方案",IDC_BUTTON2,86,217,50,14
+    PUSHBUTTON      "预览",IDC_BUTTON3,191,246,50,14
+END
+
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -144,6 +161,14 @@ BEGIN
         LEFTMARGIN, 3
         BOTTOMMARGIN, 286
     END
+
+    IDD_SETTING_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 379
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 260
+    END
 END
 #endif    // APSTUDIO_INVOKED
 
@@ -155,8 +180,8 @@ END
 
 IDR_MAINMENU MENU 
 BEGIN
-    MENUITEM "系统(S)",                       0
-    MENUITEM "设置(T)",                       0
+    MENUITEM "系统(S)",                       ID_32776
+    MENUITEM "设置(T)",                       IDM_SETTING
     MENUITEM "帮助(H)",                       0
 END
 

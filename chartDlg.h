@@ -43,4 +43,11 @@ public:
     void DrawLine(void);
 private:
     CStatusBar m_wndStatusBar;
+public:
+    afx_msg void OnSetting();
+private:
+    void ResizeList(void);
+public:
+//    afx_msg void OnMove(int x, int y);
+//    afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
 };
