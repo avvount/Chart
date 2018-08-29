@@ -5,6 +5,7 @@
 #pragma once
 #include "afxwin.h"
 #include "afxcmn.h"
+#include "afxext.h"
 
 
 
@@ -40,4 +41,6 @@ public:
     CListCtrl m_List;
 	afx_msg void OnSize(UINT nType, int cx, int cy);
     void DrawLine(void);
+private:
+    CStatusBar m_wndStatusBar;
 };

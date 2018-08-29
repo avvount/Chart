@@ -89,6 +89,16 @@ BOOL CchartDlg::OnInitDialog()
 		m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。  
 	}
 
+    //创建状态栏
+    static UINT indicators[]={ID_SEPARATOR};  
+    if(!m_wndStatusBar.Create(this)|| !m_wndStatusBar.SetIndicators(indicators,sizeof(indicators)/sizeof(UINT)))  
+    {  
+        TRACE0("Can't create status bar/n");  
+        return false;  
+    }  
+    m_wndStatusBar.MoveWindow(0,rect.bottom-20,rect.right,20);// 调整状态栏的位置和大小 
+
+
     return TRUE;  // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -229,7 +239,7 @@ void CchartDlg::DrawLine(void)
     GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
     GetClientRect(&rectWindow);
     rectDrawing.top=rectListCtrl.bottom+30;
-    rectDrawing.bottom=rectWindow.bottom-20;
+    rectDrawing.bottom=rectWindow.bottom-40;
     rectDrawing.left=rectWindow.left+30;
     rectDrawing.right=rectWindow.right-20;
     int y_middle=(rectDrawing.bottom+rectDrawing.top)/2;
