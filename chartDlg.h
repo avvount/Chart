@@ -34,19 +34,21 @@ class CchartDlg : public CDialog
     afx_msg HCURSOR OnQueryDragIcon();
     DECLARE_MESSAGE_MAP()
   public:
-    int m_Quantity;
-    int m_Groups;
+
     afx_msg void OnBnClickedGenerate();
-    int **m_pData;
+    
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-    CNewListCtrl m_List;
+    
     afx_msg void OnSize(UINT nType, int cx, int cy);
     void DrawLine(void);
 
-  private:
+private:
+    CNewListCtrl m_List;
+    int **m_pData;
     CStatusBar m_wndStatusBar;
-
-  public:
+    int m_Quantity;
+    int m_Groups;
+public:
     afx_msg void OnSetting();
 
   private:
@@ -58,10 +60,11 @@ class CchartDlg : public CDialog
 
   private:
     COLORREF m_clrD, m_clrL1, m_clrL2, m_clrL3, m_clrL4, m_clrL5;
-
-  public:
     COLORREF m_clrOddLine;
     COLORREF m_clrEvenLine;
+
+  public:
+
     void setLineColor(void);
     afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 };

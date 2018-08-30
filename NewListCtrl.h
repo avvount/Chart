@@ -20,31 +20,23 @@ typedef struct
 
 class CNewListCtrl : public CListCtrl
 {
-  public:
+public:
     void SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);    //设置某一行的前景色和背景色
     void SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor); //设置全部行的前景色和背景色
     void ClearColor();                                                           //清除颜色映射表
-                                                                                 // Construction
-  public:
+    // Construction
+public:
     CNewListCtrl();
 
     // Attributes
-  public:
+public:
     CMap<DWORD, DWORD &, TEXT_BK, TEXT_BK &> MapItemColor;
 
-    // Operations
-  public:
-    // Overrides
-    // ClassWizard generated virtual function overrides
-    //{{AFX_VIRTUAL(CLineColorListCtrl)
-    //}}AFX_VIRTUAL
-
-    // Implementation
-  public:
+public:
     virtual ~CNewListCtrl();
 
     // Generated message map functions
-  protected:
+protected:
     //{{AFX_MSG(CLineColorListCtrl)
     // NOTE - the ClassWizard will add and remove member functions here.
     //}}AFX_MSG

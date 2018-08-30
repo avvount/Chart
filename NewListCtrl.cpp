@@ -7,8 +7,6 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-/////////////////////////////////////////////////////////////////////////////
-// CNewListCtrl
 
 CNewListCtrl::CNewListCtrl()
 {
@@ -71,8 +69,6 @@ void CNewListCtrl::SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBk
 
     MapItemColor.SetAt(iItem, tb);   //设置某行的颜色。
     this->RedrawItems(iItem, iItem); //重新染色
-
-    //this->SetCheck(iItem,1);
     this->SetFocus(); //设置焦点
     UpdateWindow();
 }
@@ -94,5 +90,4 @@ void CNewListCtrl::SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF Tex
         }
     }
 
-    return;
 }

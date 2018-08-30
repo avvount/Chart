@@ -83,14 +83,6 @@ BOOL CchartDlg::OnInitDialog()
     m_List.InsertColumn(3, "第三组");
     m_List.InsertColumn(4, "第四组");
     m_List.InsertColumn(5, "第五组");
-    //Column宽度
-    //CRect rect;
-    //m_List.GetClientRect(rect); //获得当前客户区信息
-    //m_List.SetColumnWidth(0, rect.Width() / 8);
-    //for (int i = 1; i < 6; i++)
-    //{
-    //    m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。
-    //}
 
     //创建状态栏
     static UINT indicators[] = {ID_SEPARATOR};
@@ -263,10 +255,10 @@ void CchartDlg::GenerateList(void)
         }
         int t2 = GetTickCount();
         setLineColor();
-        CString strStatusBar;
-        strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
+        CString strStatusInfo;
+        strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
                             m_Groups, t2 - t1);
-        m_wndStatusBar.SetPaneText(0, strStatusBar);
+        m_wndStatusBar.SetPaneText(0, strStatusInfo);
         
     }
 }
@@ -297,7 +289,7 @@ void CchartDlg::DrawLine(void)
     dcPaint.LineTo(rectDrawing.left, y_middle);
     dcPaint.LineTo(rectDrawing.right, y_middle);
     CFont font;
-    font.CreatePointFont(100,"楷体");
+    font.CreatePointFont(100,"Consolas");
     dcPaint.SelectObject(&font);
     dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
     dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
