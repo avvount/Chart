@@ -46,6 +46,7 @@ ON_WM_SIZE()
 ON_COMMAND(IDM_SETTING, &CchartDlg::OnSetting)
 //ON_WM_MOVE()
 //ON_WM_SYSCOMMAND()
+ON_WM_GETMINMAXINFO()
 END_MESSAGE_MAP()
 
 // CchartDlg 消息处理程序
@@ -83,13 +84,13 @@ BOOL CchartDlg::OnInitDialog()
     m_List.InsertColumn(4, "第四组");
     m_List.InsertColumn(5, "第五组");
     //Column宽度
-    CRect rect;
-    m_List.GetClientRect(rect); //获得当前客户区信息
-    m_List.SetColumnWidth(0, rect.Width() / 8);
-    for (int i = 1; i < 6; i++)
-    {
-        m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。
-    }
+    //CRect rect;
+    //m_List.GetClientRect(rect); //获得当前客户区信息
+    //m_List.SetColumnWidth(0, rect.Width() / 8);
+    //for (int i = 1; i < 6; i++)
+    //{
+    //    m_List.SetColumnWidth(i, rect.Width() / 6); //设置列的宽度。
+    //}
 
     //创建状态栏
     static UINT indicators[] = {ID_SEPARATOR};
@@ -146,7 +147,10 @@ void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
     GenerateList();
-    DrawLine();
+    Invalidate();
+    //UpdateWindow();
+    
+    //DrawLine();
 }
 
 void CchartDlg::OnLButtonDown(UINT nFlags, CPoint point)
@@ -160,7 +164,7 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
     CDialog::OnSize(nType, cx, cy);
 
     // TODO: 在此处添加消息处理程序代码
-    //ResizeList();
+   
     if (m_wndStatusBar.GetSafeHwnd())
     {
         CRect rect;
@@ -263,7 +267,7 @@ void CchartDlg::GenerateList(void)
         strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
                             m_Groups, t2 - t1);
         m_wndStatusBar.SetPaneText(0, strStatusBar);
-        //DrawLine();
+        
     }
 }
 
@@ -283,8 +287,7 @@ void CchartDlg::DrawLine(void)
     rectDrawing.left = rectWindow.left + 30;
     rectDrawing.right = rectWindow.right - 20;
     int y_middle = (rectDrawing.bottom + rectDrawing.top) / 2;
-    CRect rectClear(rectDrawing.left - 30, rectDrawing.top - 10, rectDrawing.right + 20, rectDrawing.bottom + 20);
-
+    CRect rectClear(rectDrawing.left - 30, rectDrawing.top - 20, rectDrawing.right + 20, rectDrawing.bottom + 20);
     CClientDC dcPaint(this);
     dcPaint.FillSolidRect(rectClear, RGB(255, 255, 255));
     CPen pen(PS_SOLID, 1, m_clrD);
@@ -293,9 +296,12 @@ void CchartDlg::DrawLine(void)
     dcPaint.LineTo(rectDrawing.left, rectDrawing.top);
     dcPaint.LineTo(rectDrawing.left, y_middle);
     dcPaint.LineTo(rectDrawing.right, y_middle);
-    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top, "10");
+    CFont font;
+    font.CreatePointFont(100,"楷体");
+    dcPaint.SelectObject(&font);
+    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
     dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
-    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.bottom - 10, "-10");
+    dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
 
     COLORREF clrTmp;
     for (int i = 0; i < m_Groups; i++)
@@ -346,4 +352,13 @@ void CchartDlg::setLineColor(void)
             m_List.SetItemColor(i, RGB(0, 0, 0), m_clrOddLine);
         }
     }
+}
+
+void CchartDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+{
+    // TODO: 在此添加消息处理程序代码和/或调用默认值
+    //限制窗口最小尺寸
+    lpMMI->ptMinTrackSize.x=600;
+    lpMMI->ptMinTrackSize.y=400;
+    CDialog::OnGetMinMaxInfo(lpMMI);
 }

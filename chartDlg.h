@@ -50,7 +50,7 @@ class CchartDlg : public CDialog
     afx_msg void OnSetting();
 
   private:
-    void ResizeList(void);
+    void ResizeList(void);//…Ë÷√CListCtrl¡–øÌ
 
   public:
   private:
@@ -63,4 +63,5 @@ class CchartDlg : public CDialog
     COLORREF m_clrOddLine;
     COLORREF m_clrEvenLine;
     void setLineColor(void);
+    afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
 };
