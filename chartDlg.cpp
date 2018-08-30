@@ -60,12 +60,12 @@ BOOL CchartDlg::OnInitDialog()
     SetIcon(m_hIcon, FALSE); // 设置小图标
 
     // TODO: 在此添加额外的初始化代码
-
+    //菜单
     CMenu menu;
     menu.LoadMenu(IDR_MAINMENU);
     SetMenu(&menu);
     menu.Detach();
-
+    //下拉选择框
     CString strTemp;
     ((CComboBox *)GetDlgItem(IDC_COMBO_Quantity))->ResetContent(); //消除现有所有内容
     for (int i = 1; i <= MAXQUANTITY; i++)
@@ -73,7 +73,7 @@ BOOL CchartDlg::OnInitDialog()
         strTemp.Format("%d", i);
         ((CComboBox *)GetDlgItem(IDC_COMBO_Quantity))->AddString(strTemp);
     }
-
+    //CListCtrl表头
     m_List.ModifyStyle(0, LVS_REPORT); // 报表模式
     m_List.SetExtendedStyle(m_List.GetExtendedStyle() | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
     m_List.InsertColumn(0, "编号");
@@ -82,7 +82,7 @@ BOOL CchartDlg::OnInitDialog()
     m_List.InsertColumn(3, "第三组");
     m_List.InsertColumn(4, "第四组");
     m_List.InsertColumn(5, "第五组");
-
+    //Column宽度
     CRect rect;
     m_List.GetClientRect(rect); //获得当前客户区信息
     m_List.SetColumnWidth(0, rect.Width() / 8);
@@ -263,7 +263,7 @@ void CchartDlg::GenerateList(void)
         strStatusBar.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
                             m_Groups, t2 - t1);
         m_wndStatusBar.SetPaneText(0, strStatusBar);
-        DrawLine();
+        //DrawLine();
     }
 }
 
@@ -320,10 +320,13 @@ void CchartDlg::DrawLine(void)
         }
         CPen LinePen(PS_SOLID, 1, clrTmp);
         dcPaint.SelectObject(&LinePen);
-        dcPaint.MoveTo(rectDrawing.left + 5, rectDrawing.bottom - (m_pData[0][i] + 10) / 20.0 * rectDrawing.Height());
+        dcPaint.MoveTo(rectDrawing.left + 5, rectDrawing.bottom - 
+            (m_pData[0][i] + 10) / 20.0 * rectDrawing.Height());
         for (int j = 1; j < m_Quantity; j++)
         {
-            dcPaint.LineTo(rectDrawing.left + 5 + (float)j / (m_Quantity - 1) * (rectDrawing.Width() - 5), rectDrawing.bottom - (m_pData[j][i] + 10) / 20.0 * rectDrawing.Height());
+            dcPaint.LineTo(rectDrawing.left + 5 + (float)j / (m_Quantity - 1) 
+                * (rectDrawing.Width() - 5), rectDrawing.bottom - 
+                (m_pData[j][i] + 10) / 20.0 * rectDrawing.Height());
         }
     }
 }
