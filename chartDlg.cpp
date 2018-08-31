@@ -12,6 +12,8 @@
 #define new DEBUG_NEW
 #endif
 
+
+
 // CchartDlg 对话框
 
 CchartDlg::CchartDlg(CWnd *pParent /*=NULL*/)
@@ -26,6 +28,7 @@ CchartDlg::CchartDlg(CWnd *pParent /*=NULL*/)
     m_clrL5 = RGB(0, 255, 255);
     m_clrEvenLine = RGB(255, 255, 0);
     m_clrOddLine = RGB(0, 255, 255);
+    m_clrSelected=RGB(0,100,100);
 }
 
 void CchartDlg::DoDataExchange(CDataExchange *pDX)
@@ -44,10 +47,14 @@ ON_WM_LBUTTONDOWN()
 //	ON_WM_SIZE()
 ON_WM_SIZE()
 ON_COMMAND(IDM_SETTING, &CchartDlg::OnSetting)
-//ON_WM_MOVE()
-//ON_WM_SYSCOMMAND()
+
 ON_WM_GETMINMAXINFO()
+
+ON_NOTIFY(NM_CLICK, IDC_LISTCTRL, &CchartDlg::OnNMClickListctrl)
 END_MESSAGE_MAP()
+
+
+
 
 // CchartDlg 消息处理程序
 
@@ -76,7 +83,7 @@ BOOL CchartDlg::OnInitDialog()
     }
     //CListCtrl表头
     m_List.ModifyStyle(0, LVS_REPORT); // 报表模式
-    m_List.SetExtendedStyle(m_List.GetExtendedStyle() | LVS_EX_GRIDLINES | LVS_EX_FULLROWSELECT);
+    m_List.SetExtendedStyle(LVS_EX_GRIDLINES/* | LVS_EX_FULLROWSELECT*/);
     m_List.InsertColumn(0, "编号");
     m_List.InsertColumn(1, "第一组");
     m_List.InsertColumn(2, "第二组");
@@ -85,15 +92,15 @@ BOOL CchartDlg::OnInitDialog()
     m_List.InsertColumn(5, "第五组");
 
     //创建状态栏
-    static UINT indicators[] = {ID_SEPARATOR};
-    if (!m_wndStatusBar.Create(this) ||
-        !m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT)))
+    UINT indicators[] = {ID_SEPARATOR};
+    
+    if (!m_wndStatusBar.Create(this))
     {
-        TRACE0("Can't create status bar/n");
-        return false;
+        TRACE0("未能创建状态栏\n");
+        return -1;      // 未能创建
     }
+    m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
-
     return TRUE; // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -178,6 +185,7 @@ void CchartDlg::OnSetting()
     dlg.m_clrLine5 = m_clrL5;
     dlg.m_clrOddLine = m_clrOddLine;
     dlg.m_clrEvenLine = m_clrEvenLine;
+    dlg.m_clrSelected=m_clrSelected;
     if (IDOK == dlg.DoModal())
     {
         m_clrD = dlg.m_clrCoordinate;
@@ -188,8 +196,10 @@ void CchartDlg::OnSetting()
         m_clrL5 = dlg.m_clrLine5;
         m_clrOddLine = dlg.m_clrOddLine;
         m_clrEvenLine = dlg.m_clrEvenLine;
+        m_clrSelected=dlg.m_clrSelected;
         DrawLine();
         setLineColor();
+        m_List.RedrawItems(0,m_List.GetItemCount()-1);
     }
 }
 
@@ -235,6 +245,7 @@ void CchartDlg::GenerateList(void)
     }
     else
     {
+        setLineColor();
         int t1 = GetTickCount();
         m_pData = new int *[m_Quantity];
         for (int i = 0; i < m_Quantity; i++)
@@ -254,7 +265,7 @@ void CchartDlg::GenerateList(void)
             }
         }
         int t2 = GetTickCount();
-        setLineColor();
+        
         CString strStatusInfo;
         strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
                             m_Groups, t2 - t1);
@@ -335,13 +346,11 @@ void CchartDlg::setLineColor(void)
     {
         if (i % 2)
         {
-            //偶数行
-            m_List.SetItemColor(i, RGB(0, 0, 0), m_clrEvenLine);
+            m_List.SetItemColor(i, m_clrEvenLine);  //偶数行
         }
         else
         {
-            //奇数行
-            m_List.SetItemColor(i, RGB(0, 0, 0), m_clrOddLine);
+            m_List.SetItemColor(i, m_clrOddLine);   //奇数行
         }
     }
 }
@@ -353,4 +362,15 @@ void CchartDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
     lpMMI->ptMinTrackSize.x=600;
     lpMMI->ptMinTrackSize.y=400;
     CDialog::OnGetMinMaxInfo(lpMMI);
+}
+
+
+void CchartDlg::OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
+{
+    LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+    // TODO: 在此添加控件通知处理程序代码
+    setLineColor();
+    m_List.SetItemColor(pNMItemActivate->iItem,m_clrSelected);
+    m_List.RedrawItems(0,m_List.GetItemCount()-1);
+    *pResult = 0;
 }

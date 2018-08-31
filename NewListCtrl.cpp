@@ -7,20 +7,10 @@
 static char THIS_FILE[] = __FILE__;
 #endif
 
-
-CNewListCtrl::CNewListCtrl()
-{
-}
-
-CNewListCtrl::~CNewListCtrl()
-{
-}
-
 BEGIN_MESSAGE_MAP(CNewListCtrl, CListCtrl)
-//{{AFX_MSG_MAP(CNewListCtrl)
-// NOTE - the ClassWizard will add and remove mapping macros here.
-//}}AFX_MSG_MAP
 ON_NOTIFY_REFLECT(NM_CUSTOMDRAW, OnNMCustomdraw)
+//ON_NOTIFY_REFLECT(NM_CLICK, &CNewListCtrl::OnNMClick)
+//ON_NOTIFY_REFLECT(NM_CLICK, &CNewListCtrl::OnNMClick)
 END_MESSAGE_MAP()
 
 /////////////////////////////////////////////////////////////////////////////
@@ -31,7 +21,6 @@ void CNewListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
     // TODO: Add your control notification handler code here
     *pResult = CDRF_DODEFAULT;
     NMLVCUSTOMDRAW *lplvdr = (NMLVCUSTOMDRAW *)pNMHDR;
-    NMCUSTOMDRAW &nmcd = lplvdr->nmcd;
     switch (lplvdr->nmcd.dwDrawStage) //判断状态
     {
     case CDDS_PREPAINT:
@@ -41,53 +30,34 @@ void CNewListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
     }
     case CDDS_ITEMPREPAINT: //如果为画ITEM之前就要进行颜色的改变
     {
-        TEXT_BK tb;
-
-        if (MapItemColor.Lookup(nmcd.dwItemSpec, tb))
-        // 根据在 SetItemColor(DWORD iItem, COLORREF color) 设置的
-        // ITEM号和COLORREF 在摸板中查找，然后进行颜色赋值。
+        COLORREF ClrBk;
+        
+        if (MapItemColor.Lookup(lplvdr->nmcd.dwItemSpec, ClrBk))
+        //// 根据在 SetItemColor(DWORD iItem, COLORREF color) 设置的
+        //// ITEM号和COLORREF 在摸板中查找，然后进行颜色赋值。
         {
-            lplvdr->clrText = tb.colText;
-            lplvdr->clrTextBk = tb.colTextBk;
+            lplvdr->clrTextBk=ClrBk;
             *pResult = CDRF_DODEFAULT;
+            
         }
+        break;
     }
-    break;
     }
 }
 
-void CNewListCtrl::ClearColor()
+
+void CNewListCtrl::SetItemColor(DWORD iItem, COLORREF TextBkColor)
 {
-    MapItemColor.RemoveAll();
+    MapItemColor.SetAt(iItem, TextBkColor);
 }
 
-void CNewListCtrl::SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor)
-{
-    TEXT_BK tb;
-    tb.colText = TextColor;
-    tb.colTextBk = TextBkColor;
 
-    MapItemColor.SetAt(iItem, tb);   //设置某行的颜色。
-    this->RedrawItems(iItem, iItem); //重新染色
-    this->SetFocus(); //设置焦点
-    UpdateWindow();
-}
-
-void CNewListCtrl::SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor)
-{
-    //INT_PTR ncount = this->GetItemCount();
-    TEXT_BK tb;
-    tb.colText = TextColor;
-    tb.colTextBk = TextBkColor;
-
-    if (iItem > 0)
-    {
-        for (DWORD numItem = 0; numItem < iItem; numItem++)
-        {
-            //iItem = i;
-            MapItemColor.SetAt(numItem, tb);
-            this->RedrawItems(numItem, numItem);
-        }
-    }
-
-}
+//void CNewListCtrl::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
+//{
+//    LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
+//    // TODO: 在此添加控件通知处理程序代码
+//    
+//    //SetItemColor(pNMItemActivate->iItem,RGB(0,0,0));
+//    //RedrawItems(pNMItemActivate->iItem,pNMItemActivate->iItem);
+//    *pResult = 0;
+//}

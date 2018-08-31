@@ -9,31 +9,15 @@
 
 #include <afxtempl.h>
 
-typedef struct
-{
-    COLORREF colText;
-    COLORREF colTextBk;
-} TEXT_BK;
 
-/////////////////////////////////////////////////////////////////////////////
-// CLineColorListCtrl window
 
 class CNewListCtrl : public CListCtrl
 {
 public:
-    void SetItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor);    //设置某一行的前景色和背景色
-    void SetAllItemColor(DWORD iItem, COLORREF TextColor, COLORREF TextBkColor); //设置全部行的前景色和背景色
-    void ClearColor();                                                           //清除颜色映射表
-    // Construction
-public:
-    CNewListCtrl();
-
-    // Attributes
-public:
-    CMap<DWORD, DWORD &, TEXT_BK, TEXT_BK &> MapItemColor;
+    void SetItemColor(DWORD iItem,  COLORREF TextBkColor);    //设置某一行背景色
 
 public:
-    virtual ~CNewListCtrl();
+    CMap<DWORD, DWORD &, COLORREF, COLORREF &> MapItemColor;
 
     // Generated message map functions
 protected:
@@ -43,6 +27,8 @@ protected:
     void CNewListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult);
 
     DECLARE_MESSAGE_MAP()
+public:
+//    afx_msg void OnNMClick(NMHDR *pNMHDR, LRESULT *pResult);
 };
 
 /////////////////////////////////////////////////////////////////////////////

@@ -36,9 +36,7 @@ class CchartDlg : public CDialog
   public:
 
     afx_msg void OnBnClickedGenerate();
-    
     afx_msg void OnLButtonDown(UINT nFlags, CPoint point);
-    
     afx_msg void OnSize(UINT nType, int cx, int cy);
     void DrawLine(void);
 
@@ -67,4 +65,8 @@ public:
 
     void setLineColor(void);
     afx_msg void OnGetMinMaxInfo(MINMAXINFO* lpMMI);
+
+    afx_msg void OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult);
+private:
+    COLORREF m_clrSelected;
 };

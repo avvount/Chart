@@ -22,13 +22,14 @@ void CSettingDialog::DoDataExchange(CDataExchange *pDX)
 {
     CDialog::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_COORDINATE, m_Coordinate);
-    DDX_Control(pDX, IDC_LINE1, m_Line1);
-    DDX_Control(pDX, IDC_LINE2, m_Line2);
-    DDX_Control(pDX, IDC_LINE3, m_Line3);
-    DDX_Control(pDX, IDC_LINE4, m_Line4);
-    DDX_Control(pDX, IDC_LINE5, m_Line5);
-    DDX_Control(pDX, IDC_ODDLINE, m_OddLine);
-    DDX_Control(pDX, IDC_EVENLINE, m_EvenLine);
+    DDX_Control(pDX, IDC_LINE1, m_btnLine1);
+    DDX_Control(pDX, IDC_LINE2, m_btnLine2);
+    DDX_Control(pDX, IDC_LINE3, m_btnLine3);
+    DDX_Control(pDX, IDC_LINE4, m_btnLine4);
+    DDX_Control(pDX, IDC_LINE5, m_btnLine5);
+    DDX_Control(pDX, IDC_ODDLINE, m_btnOddLine);
+    DDX_Control(pDX, IDC_EVENLINE, m_btnEvenLine);
+    DDX_Control(pDX, IDC_CHOOSENLINE, m_btnSelectedLine);
 }
 
 BEGIN_MESSAGE_MAP(CSettingDialog, CDialog)
@@ -41,6 +42,7 @@ ON_BN_CLICKED(IDC_LINE4, &CSettingDialog::OnBnClickedLine4)
 ON_BN_CLICKED(IDC_LINE5, &CSettingDialog::OnBnClickedLine5)
 ON_BN_CLICKED(IDC_ODDLINE, &CSettingDialog::OnBnClickedOddline)
 ON_BN_CLICKED(IDC_EVENLINE, &CSettingDialog::OnBnClickedEvenline)
+ON_BN_CLICKED(IDC_CHOOSENLINE, &CSettingDialog::OnBnClickedChoosenline)
 END_MESSAGE_MAP()
 
 // CSettingDialog 消息处理程序
@@ -75,13 +77,14 @@ BOOL CSettingDialog::OnInitDialog()
 
     m_Coordinate.SetFaceColor(m_clrCoordinate);
     m_Coordinate.SetTextColor(RGB(255, 255, 255));
-    m_Line1.SetFaceColor(m_clrLine1);
-    m_Line2.SetFaceColor(m_clrLine2);
-    m_Line3.SetFaceColor(m_clrLine3);
-    m_Line4.SetFaceColor(m_clrLine4);
-    m_Line5.SetFaceColor(m_clrLine5);
-    m_OddLine.SetFaceColor(m_clrOddLine);
-    m_EvenLine.SetFaceColor(m_clrEvenLine);
+    m_btnLine1.SetFaceColor(m_clrLine1);
+    m_btnLine2.SetFaceColor(m_clrLine2);
+    m_btnLine3.SetFaceColor(m_clrLine3);
+    m_btnLine4.SetFaceColor(m_clrLine4);
+    m_btnLine5.SetFaceColor(m_clrLine5);
+    m_btnOddLine.SetFaceColor(m_clrOddLine);
+    m_btnEvenLine.SetFaceColor(m_clrEvenLine);
+    m_btnSelectedLine.SetFaceColor(m_clrSelected);
     return 0;
 }
 void CSettingDialog::OnBnClickedLine1()
@@ -91,7 +94,7 @@ void CSettingDialog::OnBnClickedLine1()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrLine1 = clrdlg.m_cc.rgbResult;
-        m_Line1.SetFaceColor(m_clrLine1);
+        m_btnLine1.SetFaceColor(m_clrLine1);
     }
 }
 
@@ -102,7 +105,7 @@ void CSettingDialog::OnBnClickedLine2()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrLine2 = clrdlg.m_cc.rgbResult;
-        m_Line2.SetFaceColor(m_clrLine2);
+        m_btnLine2.SetFaceColor(m_clrLine2);
     }
 }
 
@@ -113,7 +116,7 @@ void CSettingDialog::OnBnClickedLine3()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrLine3 = clrdlg.m_cc.rgbResult;
-        m_Line3.SetFaceColor(m_clrLine3);
+        m_btnLine3.SetFaceColor(m_clrLine3);
     }
 }
 
@@ -124,7 +127,7 @@ void CSettingDialog::OnBnClickedLine4()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrLine4 = clrdlg.m_cc.rgbResult;
-        m_Line4.SetFaceColor(m_clrLine4);
+        m_btnLine4.SetFaceColor(m_clrLine4);
     }
 }
 
@@ -135,7 +138,7 @@ void CSettingDialog::OnBnClickedLine5()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrLine5 = clrdlg.m_cc.rgbResult;
-        m_Line5.SetFaceColor(m_clrLine5);
+        m_btnLine5.SetFaceColor(m_clrLine5);
     }
 }
 
@@ -146,7 +149,7 @@ void CSettingDialog::OnBnClickedOddline()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrOddLine = clrdlg.m_cc.rgbResult;
-        m_OddLine.SetFaceColor(m_clrOddLine);
+        m_btnOddLine.SetFaceColor(m_clrOddLine);
     }
 }
 
@@ -157,6 +160,17 @@ void CSettingDialog::OnBnClickedEvenline()
     if (IDOK == clrdlg.DoModal())
     {
         m_clrEvenLine = clrdlg.m_cc.rgbResult;
-        m_EvenLine.SetFaceColor(m_clrEvenLine);
+        m_btnEvenLine.SetFaceColor(m_clrEvenLine);
+    }
+}
+
+void CSettingDialog::OnBnClickedChoosenline()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    CColorDialog clrdlg;
+    if (IDOK == clrdlg.DoModal())
+    {
+        m_clrSelected = clrdlg.m_cc.rgbResult;
+        m_btnSelectedLine.SetFaceColor(m_clrSelected);
     }
 }
