@@ -38,7 +38,6 @@ void CNewListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
         {
             lplvdr->clrTextBk=ClrBk;
             *pResult = CDRF_DODEFAULT;
-            
         }
         break;
     }
