@@ -7,6 +7,7 @@
 #include "afxcmn.h"
 #include "afxext.h"
 #include "NewListCtrl.h"
+#include "atltypes.h"
 
 // CchartDlg ¶Ô»°¿ò
 class CchartDlg : public CDialog
@@ -69,4 +70,6 @@ public:
     afx_msg void OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult);
 private:
     COLORREF m_clrSelected;
+    DWORD WINAPI DrawLineThread(LPVOID lpParameter);
+    CRect rectDrawing;
 };

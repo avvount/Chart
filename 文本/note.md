@@ -12,3 +12,5 @@ CSringA tmp;    //CString在多字节环境下为CSringA,在宽字节环境下为CStringW
 tmp=str; 
 char *p=tmp.GetBuffer();
 ```
+
+## 事件对象与互斥对象都属于内核对象  

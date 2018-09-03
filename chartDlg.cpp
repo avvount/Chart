@@ -1,7 +1,7 @@
 
 // chartDlg.cpp : 实现文件
 //
-
+#include <windows.h>
 #include "stdafx.h"
 #include "chart.h"
 #include "chartDlg.h"
@@ -282,7 +282,7 @@ void CchartDlg::DrawLine(void)
         return;
     }
 
-    CRect rectListCtrl, rectWindow, rectDrawing;
+    CRect rectListCtrl, rectWindow;
     GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
     GetClientRect(&rectWindow);
     rectDrawing.top = rectListCtrl.bottom + 40;
@@ -306,38 +306,17 @@ void CchartDlg::DrawLine(void)
     dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
     dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
 
-    COLORREF clrTmp;
-    for (int i = 0; i < m_Groups; i++)
+    
+    /*HANDLE *hThread=new HANDLE[m_Groups];*/
+    for (int i=0;i<m_Groups;i++)
     {
-        switch (i)
-        {
-        case 0:
-            clrTmp = m_clrL1;
-            break;
-        case 1:
-            clrTmp = m_clrL2;
-            break;
-        case 2:
-            clrTmp = m_clrL3;
-            break;
-        case 3:
-            clrTmp = m_clrL4;
-            break;
-        case 4:
-            clrTmp = m_clrL5;
-            break;
-        }
-        CPen LinePen(PS_SOLID, 1, clrTmp);
-        dcPaint.SelectObject(&LinePen);
-        dcPaint.MoveTo(rectDrawing.left + 5, rectDrawing.bottom - 
-            (m_pData[0][i] + 10) / 20.0 * rectDrawing.Height());
-        for (int j = 1; j < m_Quantity; j++)
-        {
-            dcPaint.LineTo(rectDrawing.left + 5 + (float)j / (m_Quantity - 1) 
-                * (rectDrawing.Width() - 5), rectDrawing.bottom - 
-                (m_pData[j][i] + 10) / 20.0 * rectDrawing.Height());
-        }
+        HANDLE hThread;
+        hThread=CreateThread(NULL,0,DrawLineThread,&i);
+        CloseHandle(hThread);
     }
+    //delete []hThread;
+
+
 }
 
 void CchartDlg::setLineColor(void)
@@ -373,4 +352,42 @@ void CchartDlg::OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
     m_List.SetItemColor(pNMItemActivate->iItem,m_clrSelected);
     m_List.RedrawItems(0,m_List.GetItemCount()-1);
     *pResult = 0;
+}
+
+DWORD CchartDlg::DrawLineThread(LPVOID lpParameter)
+{
+
+    COLORREF clrTmp;
+    int index=*lpParameter;
+    switch (index)
+    {
+    case 0:
+        clrTmp = m_clrL1;
+        break;
+    case 1:
+        clrTmp = m_clrL2;
+        break;
+    case 2:
+        clrTmp = m_clrL3;
+        break;
+    case 3:
+        clrTmp = m_clrL4;
+        break;
+    case 4:
+        clrTmp = m_clrL5;
+        break;
+    }
+    CPen LinePen(PS_SOLID, 1, clrTmp);
+    CClientDC dcPaint(this);
+    dcPaint.SelectObject(&LinePen);
+    dcPaint.MoveTo(rectDrawing.left + 5, rectDrawing.bottom - 
+        (m_pData[0][index] + 10) / 20.0 * rectDrawing.Height());
+    for (int j = 1; j < m_Quantity; j++)
+    {
+        dcPaint.LineTo(rectDrawing.left + 5 + (float)j / (m_Quantity - 1) 
+            * (rectDrawing.Width() - 5), rectDrawing.bottom - 
+            (m_pData[j][index] + 10) / 20.0 * rectDrawing.Height());
+    }
+
+    return 0;
 }
