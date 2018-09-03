@@ -1,7 +1,7 @@
 
 // chartDlg.cpp : 实现文件
 //
-#include <windows.h>
+//#include <windows.h>
 #include "stdafx.h"
 #include "chart.h"
 #include "chartDlg.h"
@@ -305,15 +305,17 @@ void CchartDlg::DrawLine(void)
     dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
     dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
     dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
-
-    
+    HANDLE hThread;
+    hThread=CreateThread(NULL,0,DrawLineThread,0,0,0);
+    CloseHandle(hThread);
+  
     /*HANDLE *hThread=new HANDLE[m_Groups];*/
-    for (int i=0;i<m_Groups;i++)
+   /* for (int i=0;i<m_Groups;i++)
     {
         HANDLE hThread;
-        hThread=CreateThread(NULL,0,DrawLineThread,&i);
+        hThread=CreateThread(NULL,0,DrawLineThread,&i,0,0);
         CloseHandle(hThread);
-    }
+    }*/
     //delete []hThread;
 
 
