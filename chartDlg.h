@@ -9,6 +9,8 @@
 #include "NewListCtrl.h"
 #include "atltypes.h"
 
+
+
 // CchartDlg ¶Ô»°¿ò
 class CchartDlg : public CDialog
 {
@@ -70,6 +72,32 @@ public:
     afx_msg void OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult);
 private:
     COLORREF m_clrSelected;
-    DWORD WINAPI DrawLineThread(LPVOID lpParameter);
+    static DWORD WINAPI DrawLineThread(LPVOID lpParameter);
     CRect rectDrawing;
+};
+
+class ThreadInfo
+{
+public:
+	int index;
+	int ** m_pdata;
+	CRect rect;
+	CClientDC dcPaint;
+	COLORREF m_clrL[5];
+	int m_quantity;
+
+	ThreadInfo(int index,int m_quantity,CClientDC &dcPaint,int ** &m_pdata,CRect rect,COLORREF m_clrL1,
+		COLORREF m_clrL2,COLORREF m_clrL3,COLORREF m_clrL4,COLORREF m_clrL5)
+	{
+		this->index=index;
+		this->m_quantity=m_quantity;
+		this->dcPaint=dcPaint;
+		this->m_pdata=m_pdata;
+		this->rect=rect;
+		m_clrL[0]=m_clrL1;
+		m_clrL[1]=m_clrL2;
+		m_clrL[2]=m_clrL3;
+		m_clrL[3]=m_clrL4;
+		m_clrL[4]=m_clrL5;
+	}
 };

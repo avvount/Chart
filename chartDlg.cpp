@@ -305,15 +305,17 @@ void CchartDlg::DrawLine(void)
     dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
     dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
     dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
-    HANDLE hThread;
-    hThread=CreateThread(NULL,0,DrawLineThread,0,0,0);
-    CloseHandle(hThread);
-  
+	
+	ThreadInfo Info(0,m_Quantity,&dcPaint,m_pData,rectDrawing,m_clrL1,m_clrL2,m_clrL3,m_clrL4,m_clrL5);
+	HANDLE hThread;
+	hThread=CreateThread(NULL,0,DrawLineThread,&Info,0,0);
+	CloseHandle(hThread);
     /*HANDLE *hThread=new HANDLE[m_Groups];*/
    /* for (int i=0;i<m_Groups;i++)
     {
+		ThreadInfo Info(i,this,rectDrawing,m_clrL1,m_clrL2,m_clrL3,m_clrL4,m_clrL5);
         HANDLE hThread;
-        hThread=CreateThread(NULL,0,DrawLineThread,&i,0,0);
+        hThread=CreateThread(NULL,0,DrawLineThread,&Info,0,0);
         CloseHandle(hThread);
     }*/
     //delete []hThread;
@@ -359,37 +361,46 @@ void CchartDlg::OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 DWORD CchartDlg::DrawLineThread(LPVOID lpParameter)
 {
 
-    COLORREF clrTmp;
-    int index=*lpParameter;
-    switch (index)
+    COLORREF clrTmp=RGB(255,0,0);
+    ThreadInfo *Info=(ThreadInfo *)lpParameter;
+    switch (Info->index)
     {
     case 0:
-        clrTmp = m_clrL1;
+        clrTmp = Info->m_clrL[0];
         break;
     case 1:
-        clrTmp = m_clrL2;
+        clrTmp = Info->m_clrL[1];
         break;
     case 2:
-        clrTmp = m_clrL3;
+        clrTmp = Info->m_clrL[2];
         break;
     case 3:
-        clrTmp = m_clrL4;
+        clrTmp = Info->m_clrL[3];
         break;
     case 4:
-        clrTmp = m_clrL5;
+        clrTmp = Info->m_clrL[4];
         break;
     }
     CPen LinePen(PS_SOLID, 1, clrTmp);
-    CClientDC dcPaint(this);
-    dcPaint.SelectObject(&LinePen);
-    dcPaint.MoveTo(rectDrawing.left + 5, rectDrawing.bottom - 
-        (m_pData[0][index] + 10) / 20.0 * rectDrawing.Height());
-    for (int j = 1; j < m_Quantity; j++)
+	/*dcPaint.SelectObject(&LinePen);
+	dcPaint.MoveTo(Info->rect.left + 5, Info->rect.bottom - 
+		(Info->chart->m_pData[0][Info->index] + 10) / 20.0 * Info->rect.Height());
+	for (int j = 1; j < Info->chart->m_Quantity; j++)
+	{
+		dcPaint.LineTo(Info->rect.left + 5 + (float)j / (Info->chart->m_Quantity - 1) 
+			* (Info->rect.Width() - 5), Info->rect.bottom - 
+			(Info->chart->m_pData[j][Info->index] + 10) / 20.0 * Info->rect.Height());
+	}*/
+    Info->dcPaint->SelectObject(&LinePen);
+    Info->dcPaint->MoveTo(Info->rect.left + 5, Info->rect.bottom - 
+        (Info->m_pdata[0][Info->index] + 10) / 20.0 * Info->rect.Height());
+    for (int j = 1; j < Info->m_quantity; j++)
     {
-        dcPaint.LineTo(rectDrawing.left + 5 + (float)j / (m_Quantity - 1) 
-            * (rectDrawing.Width() - 5), rectDrawing.bottom - 
-            (m_pData[j][index] + 10) / 20.0 * rectDrawing.Height());
+        Info->dcPaint->LineTo(Info->rect.left + 5 + (float)j / (Info->m_quantity - 1) 
+            * (Info->rect.Width() - 5), Info->rect.bottom - 
+            (Info->m_pdata[j][Info->index] + 10) / 20.0 * Info->rect.Height());
     }
+
 
     return 0;
 }
