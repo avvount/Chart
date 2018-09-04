@@ -1,7 +1,7 @@
 
 // chartDlg.cpp : 实现文件
 //
-//#include <windows.h>
+
 #include "stdafx.h"
 #include "chart.h"
 #include "chartDlg.h"
@@ -21,14 +21,14 @@ CchartDlg::CchartDlg(CWnd *pParent /*=NULL*/)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
     m_clrD = RGB(0, 0, 0);
-    m_clrL1 = RGB(0, 0, 255);
-    m_clrL2 = RGB(0, 255, 0);
-    m_clrL3 = RGB(255, 0, 0);
-    m_clrL4 = RGB(255, 0, 255);
-    m_clrL5 = RGB(0, 255, 255);
+    m_clrL[0] = RGB(0, 0, 255);
+    m_clrL[1] = RGB(0, 255, 0);
+    m_clrL[2] = RGB(255, 0, 0);
+    m_clrL[3] = RGB(255, 0, 255);
+    m_clrL[4] = RGB(0, 255, 255);
     m_clrEvenLine = RGB(255, 255, 0);
     m_clrOddLine = RGB(0, 255, 255);
-    m_clrSelected=RGB(0,100,100);
+    m_clrSelected = RGB(0, 100, 100);
 }
 
 void CchartDlg::DoDataExchange(CDataExchange *pDX)
@@ -44,7 +44,6 @@ ON_WM_QUERYDRAGICON()
 //}}AFX_MSG_MAP
 ON_BN_CLICKED(ID_GENERATE, &CchartDlg::OnBnClickedGenerate)
 ON_WM_LBUTTONDOWN()
-//	ON_WM_SIZE()
 ON_WM_SIZE()
 ON_COMMAND(IDM_SETTING, &CchartDlg::OnSetting)
 
@@ -53,9 +52,6 @@ ON_WM_GETMINMAXINFO()
 ON_NOTIFY(NM_CLICK, IDC_LISTCTRL, &CchartDlg::OnNMClickListctrl)
 ON_WM_TIMER()
 END_MESSAGE_MAP()
-
-
-
 
 // CchartDlg 消息处理程序
 
@@ -84,7 +80,7 @@ BOOL CchartDlg::OnInitDialog()
     }
     //CListCtrl表头
     m_List.ModifyStyle(0, LVS_REPORT); // 报表模式
-    m_List.SetExtendedStyle(LVS_EX_GRIDLINES/* | LVS_EX_FULLROWSELECT*/);
+    m_List.SetExtendedStyle(LVS_EX_GRIDLINES /* | LVS_EX_FULLROWSELECT*/);
     m_List.InsertColumn(0, "编号");
     m_List.InsertColumn(1, "第一组");
     m_List.InsertColumn(2, "第二组");
@@ -94,14 +90,16 @@ BOOL CchartDlg::OnInitDialog()
 
     //创建状态栏
     UINT indicators[] = {ID_SEPARATOR};
-    
+
     if (!m_wndStatusBar.Create(this))
     {
         TRACE0("未能创建状态栏\n");
-        return -1;      // 未能创建
+        return -1; // 未能创建
     }
-    m_wndStatusBar.SetIndicators(indicators, sizeof(indicators)/sizeof(UINT));
+    m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+    Info.m_dlgChart = this;
+
     return TRUE; // 除非将焦点设置到控件，否则返回 TRUE
 }
 
@@ -148,20 +146,23 @@ void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
     GenerateList();
+    if(!m_List.GetItemCount())
+    {
+        return;
+    }
     SendMessage(WM_PAINT);
     GetDlgItem(ID_GENERATE)->EnableWindow(0);
-    SetTimer(1,200*m_Quantity,NULL);
+    SetTimer(1, 200 * m_Quantity, NULL);
     PreDrawLine();
-    Info.m_clrL[0]=m_clrL1;
-    Info.m_clrL[1]=m_clrL2;
-    Info.m_clrL[2]=m_clrL3;
-    Info.m_clrL[3]=m_clrL4;
-    Info.m_clrL[4]=m_clrL5;
-    
-    for (int i=0;i<m_Groups;i++)
+    for (int i = 0; i < 5; i++)
+    {
+        Info.m_clrL[i] = m_clrL[i];
+    }
+
+    for (int i = 0; i < m_Groups; i++)
     {
         HANDLE hThread;
-        hThread=CreateThread(NULL,0,DrawLineThread,(LPVOID)i,0,0);
+        hThread = CreateThread(NULL, 0, DrawLineThread, (LPVOID)i, 0, 0);
         CloseHandle(hThread);
     }
 }
@@ -177,7 +178,7 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
     CDialog::OnSize(nType, cx, cy);
 
     // TODO: 在此处添加消息处理程序代码
-   
+
     if (m_wndStatusBar.GetSafeHwnd())
     {
         CRect rect;
@@ -192,29 +193,30 @@ void CchartDlg::OnSetting()
     // TODO: 在此添加命令处理程序代码
     CSettingDialog dlg;
     dlg.m_clrCoordinate = m_clrD;
-    dlg.m_clrLine1 = m_clrL1;
-    dlg.m_clrLine2 = m_clrL2;
-    dlg.m_clrLine3 = m_clrL3;
-    dlg.m_clrLine4 = m_clrL4;
-    dlg.m_clrLine5 = m_clrL5;
+
+    dlg.m_clrLine1 = m_clrL[0];
+    dlg.m_clrLine2 = m_clrL[1];
+    dlg.m_clrLine3 = m_clrL[2];
+    dlg.m_clrLine4 = m_clrL[3];
+    dlg.m_clrLine5 = m_clrL[4];
     dlg.m_clrOddLine = m_clrOddLine;
     dlg.m_clrEvenLine = m_clrEvenLine;
-    dlg.m_clrSelected=m_clrSelected;
+    dlg.m_clrSelected = m_clrSelected;
     if (IDOK == dlg.DoModal())
     {
         m_clrD = dlg.m_clrCoordinate;
-        m_clrL1 = dlg.m_clrLine1;
-        m_clrL2 = dlg.m_clrLine2;
-        m_clrL3 = dlg.m_clrLine3;
-        m_clrL4 = dlg.m_clrLine4;
-        m_clrL5 = dlg.m_clrLine5;
+        m_clrL[0] = dlg.m_clrLine1;
+        m_clrL[1] = dlg.m_clrLine2;
+        m_clrL[2] = dlg.m_clrLine3;
+        m_clrL[3] = dlg.m_clrLine4;
+        m_clrL[4] = dlg.m_clrLine5;
         m_clrOddLine = dlg.m_clrOddLine;
         m_clrEvenLine = dlg.m_clrEvenLine;
-        m_clrSelected=dlg.m_clrSelected;
+        m_clrSelected = dlg.m_clrSelected;
         PreDrawLine();
         DrawLine();
         setLineColor();
-        m_List.RedrawItems(0,m_List.GetItemCount()-1);
+        m_List.RedrawItems(0, m_List.GetItemCount() - 1);
     }
 }
 
@@ -252,88 +254,68 @@ void CchartDlg::GenerateList(void)
     m_Groups = GetDlgItemInt(IDC_COMBO_GROUPS);
 
     CString str;
+    if (m_Quantity<1)
+    {
+        str = "数量应大于0\n";
+    }
     if (m_Groups < 1 || m_Groups > 5)
     {
-        str = "组数应为1~5\n";
+        str += "组数应为1~5";
+    }
+    if (str.GetLength())
+    {
         MessageBox(str);
         return;
     }
-    else
+
+    setLineColor();
+    int t1 = GetTickCount();
+    m_pData = new int *[m_Quantity];
+    for (int i = 0; i < m_Quantity; i++)
     {
-        setLineColor();
-        int t1 = GetTickCount();
-        m_pData = new int *[m_Quantity];
-        for (int i = 0; i < m_Quantity; i++)
+        str.Format("%d", i + 1);
+        m_List.InsertItem(i, str);
+        m_pData[i] = new int[m_Groups];
+        for (int j = 0; j < m_Groups; j++)
         {
-            str.Format("%d", i + 1);
-            m_List.InsertItem(i, str);
-            m_pData[i] = new int[m_Groups];
-            for (int j = 0; j < m_Groups; j++)
-            {
-                m_pData[i][j] = rand() % 21 - 10;
-                str.Format("%d", m_pData[i][j]);
-                m_List.SetItemText(i, j + 1, str);
-            }
-            for (int j = m_Groups; j < 5; j++)
-            {
-                m_List.SetItemText(i, j + 1, "0");
-            }
+            m_pData[i][j] = rand() % 21 - 10;
+            str.Format("%d", m_pData[i][j]);
+            m_List.SetItemText(i, j + 1, str);
         }
-        int t2 = GetTickCount();
-        Info.m_quantity=m_Quantity;
-        Info.m_pdata=m_pData;
-        Info.m_dlgChart=this;
-        CString strStatusInfo;
-        strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
-                            m_Groups, t2 - t1);
-        m_wndStatusBar.SetPaneText(0, strStatusInfo);
-        
+        for (int j = m_Groups; j < 5; j++)
+        {
+            m_List.SetItemText(i, j + 1, "0");
+        }
     }
+    int t2 = GetTickCount();
+    Info.m_quantity = m_Quantity;
+    Info.m_pdata = m_pData;
+    CString strStatusInfo;
+    strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
+        m_Groups, t2 - t1);
+    m_wndStatusBar.SetPaneText(0, strStatusInfo);
 }
 
 void CchartDlg::DrawLine(void)
 {
     if (!m_List.GetItemCount())
     {
-        return ;
+        return;
     }
-    COLORREF clrTmp;
     CClientDC dcPaint(this);
-    for (int i=0;i<m_Groups;i++)
+    for (int i = 0; i < m_Groups; i++)
     {
-        switch (i)
-        {
-        case 0:
-            clrTmp = m_clrL1;
-            break;
-        case 1:
-            clrTmp = m_clrL2;
-            break;
-        case 2:
-            clrTmp = m_clrL3;
-            break;
-        case 3:
-            clrTmp = m_clrL4;
-            break;
-        case 4:
-            clrTmp = m_clrL5;
-            break;
-        }
-        CPen LinePen(PS_SOLID, 1, clrTmp);
-
+        CPen LinePen(PS_SOLID, 1, m_clrL[i]);
         dcPaint.SelectObject(&LinePen);
-        dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom - 
+        dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom -
             (m_pData[0][i] + 10) / 20.0 * Info.rect.Height());
         for (int j = 1; j < m_Quantity; j++)
         {
-            dcPaint.LineTo(Info.rect.left + 5 + (float)j / (m_Quantity - 1) 
-                * (Info.rect.Width() - 5), Info.rect.bottom - 
+            dcPaint.LineTo(Info.rect.left + 5 + (float)j / (m_Quantity - 1)
+                * (Info.rect.Width() - 5), Info.rect.bottom -
                 (m_pData[j][i] + 10) / 20.0 * Info.rect.Height());
         }
     }
-    
-
-
 }
 
 void CchartDlg::setLineColor(void)
@@ -342,50 +324,47 @@ void CchartDlg::setLineColor(void)
     {
         if (i % 2)
         {
-            m_List.SetItemColor(i, m_clrEvenLine);  //偶数行
+            m_List.SetItemColor(i, m_clrEvenLine); //偶数行
         }
         else
         {
-            m_List.SetItemColor(i, m_clrOddLine);   //奇数行
+            m_List.SetItemColor(i, m_clrOddLine); //奇数行
         }
     }
 }
 
-void CchartDlg::OnGetMinMaxInfo(MINMAXINFO* lpMMI)
+void CchartDlg::OnGetMinMaxInfo(MINMAXINFO *lpMMI)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
     //限制窗口最小尺寸
-    lpMMI->ptMinTrackSize.x=600;
-    lpMMI->ptMinTrackSize.y=400;
+    lpMMI->ptMinTrackSize.x = 600;
+    lpMMI->ptMinTrackSize.y = 400;
     CDialog::OnGetMinMaxInfo(lpMMI);
 }
-
 
 void CchartDlg::OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
 {
     LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
     // TODO: 在此添加控件通知处理程序代码
     setLineColor();
-    m_List.SetItemColor(pNMItemActivate->iItem,m_clrSelected);
-    m_List.RedrawItems(0,m_List.GetItemCount()-1);
+    m_List.SetItemColor(pNMItemActivate->iItem, m_clrSelected);
+    m_List.RedrawItems(0, m_List.GetItemCount() - 1);
     *pResult = 0;
 }
 
-
 DWORD WINAPI CchartDlg::DrawLineThread(LPVOID lpParameter)
 {
-    int index=(int)lpParameter;
-
+    int index = (int)lpParameter;
     CPen LinePen(PS_SOLID, 1, Info.m_clrL[index]);
     CClientDC dcPaint(Info.m_dlgChart);
     dcPaint.SelectObject(&LinePen);
-    dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom - 
+    dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom -
         (Info.m_pdata[0][index] + 10) / 20.0 * Info.rect.Height());
     for (int j = 1; j < Info.m_quantity; j++)
     {
         Sleep(200);
         dcPaint.LineTo(Info.rect.left + 5 + (float)j / (Info.m_quantity - 1) 
-            * (Info.rect.Width() - 5), Info.rect.bottom - 
+            * (Info.rect.Width() - 5), Info.rect.bottom -
             (Info.m_pdata[j][index] + 10) / 20.0 * Info.rect.Height());
     }
 
@@ -394,10 +373,6 @@ DWORD WINAPI CchartDlg::DrawLineThread(LPVOID lpParameter)
 
 void CchartDlg::PreDrawLine(void)
 {
-   /* if (!m_List.GetItemCount())
-    {
-        return;
-    }*/
     CRect rectListCtrl, rectWindow;
     GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
     GetClientRect(&rectWindow);
@@ -416,13 +391,12 @@ void CchartDlg::PreDrawLine(void)
     dcPaint.LineTo(rectDrawing.left, y_middle);
     dcPaint.LineTo(rectDrawing.right, y_middle);
     CFont font;
-    font.CreatePointFont(100,"Consolas");
+    font.CreatePointFont(100, "Consolas");
     dcPaint.SelectObject(&font);
-    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
+    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top - 5, "10");
     dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
     dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
-    Info.rect=rectDrawing;
-
+    Info.rect = rectDrawing;
 }
 
 void CchartDlg::OnTimer(UINT_PTR nIDEvent)
