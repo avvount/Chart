@@ -12,7 +12,7 @@
 #define new DEBUG_NEW
 #endif
 
-
+ThreadInfo Info;
 
 // CchartDlg 对话框
 
@@ -51,6 +51,7 @@ ON_COMMAND(IDM_SETTING, &CchartDlg::OnSetting)
 ON_WM_GETMINMAXINFO()
 
 ON_NOTIFY(NM_CLICK, IDC_LISTCTRL, &CchartDlg::OnNMClickListctrl)
+ON_WM_TIMER()
 END_MESSAGE_MAP()
 
 
@@ -132,6 +133,7 @@ void CchartDlg::OnPaint()
         CDialog::OnPaint();
     }
     ResizeList();
+    PreDrawLine();
     DrawLine();
 }
 
@@ -146,10 +148,22 @@ void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
     GenerateList();
-    Invalidate();
-    //UpdateWindow();
+    SendMessage(WM_PAINT);
+    GetDlgItem(ID_GENERATE)->EnableWindow(0);
+    SetTimer(1,200*m_Quantity,NULL);
+    PreDrawLine();
+    Info.m_clrL[0]=m_clrL1;
+    Info.m_clrL[1]=m_clrL2;
+    Info.m_clrL[2]=m_clrL3;
+    Info.m_clrL[3]=m_clrL4;
+    Info.m_clrL[4]=m_clrL5;
     
-    //DrawLine();
+    for (int i=0;i<m_Groups;i++)
+    {
+        HANDLE hThread;
+        hThread=CreateThread(NULL,0,DrawLineThread,(LPVOID)i,0,0);
+        CloseHandle(hThread);
+    }
 }
 
 void CchartDlg::OnLButtonDown(UINT nFlags, CPoint point)
@@ -197,6 +211,7 @@ void CchartDlg::OnSetting()
         m_clrOddLine = dlg.m_clrOddLine;
         m_clrEvenLine = dlg.m_clrEvenLine;
         m_clrSelected=dlg.m_clrSelected;
+        PreDrawLine();
         DrawLine();
         setLineColor();
         m_List.RedrawItems(0,m_List.GetItemCount()-1);
@@ -265,7 +280,9 @@ void CchartDlg::GenerateList(void)
             }
         }
         int t2 = GetTickCount();
-        
+        Info.m_quantity=m_Quantity;
+        Info.m_pdata=m_pData;
+        Info.m_dlgChart=this;
         CString strStatusInfo;
         strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
                             m_Groups, t2 - t1);
@@ -276,49 +293,45 @@ void CchartDlg::GenerateList(void)
 
 void CchartDlg::DrawLine(void)
 {
-
     if (!m_List.GetItemCount())
     {
-        return;
+        return ;
     }
-
-    CRect rectListCtrl, rectWindow;
-    GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
-    GetClientRect(&rectWindow);
-    rectDrawing.top = rectListCtrl.bottom + 40;
-    rectDrawing.bottom = rectWindow.bottom - 40;
-    rectDrawing.left = rectWindow.left + 30;
-    rectDrawing.right = rectWindow.right - 20;
-    int y_middle = (rectDrawing.bottom + rectDrawing.top) / 2;
-    CRect rectClear(rectDrawing.left - 30, rectDrawing.top - 20, rectDrawing.right + 20, rectDrawing.bottom + 20);
+    COLORREF clrTmp;
     CClientDC dcPaint(this);
-    dcPaint.FillSolidRect(rectClear, RGB(255, 255, 255));
-    CPen pen(PS_SOLID, 1, m_clrD);
-    dcPaint.SelectObject(&pen);
-    dcPaint.MoveTo(rectDrawing.left, rectDrawing.bottom);
-    dcPaint.LineTo(rectDrawing.left, rectDrawing.top);
-    dcPaint.LineTo(rectDrawing.left, y_middle);
-    dcPaint.LineTo(rectDrawing.right, y_middle);
-    CFont font;
-    font.CreatePointFont(100,"Consolas");
-    dcPaint.SelectObject(&font);
-    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
-    dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
-    dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
-	
-	ThreadInfo Info(0,m_Quantity,&dcPaint,m_pData,rectDrawing,m_clrL1,m_clrL2,m_clrL3,m_clrL4,m_clrL5);
-	HANDLE hThread;
-	hThread=CreateThread(NULL,0,DrawLineThread,&Info,0,0);
-	CloseHandle(hThread);
-    /*HANDLE *hThread=new HANDLE[m_Groups];*/
-   /* for (int i=0;i<m_Groups;i++)
+    for (int i=0;i<m_Groups;i++)
     {
-		ThreadInfo Info(i,this,rectDrawing,m_clrL1,m_clrL2,m_clrL3,m_clrL4,m_clrL5);
-        HANDLE hThread;
-        hThread=CreateThread(NULL,0,DrawLineThread,&Info,0,0);
-        CloseHandle(hThread);
-    }*/
-    //delete []hThread;
+        switch (i)
+        {
+        case 0:
+            clrTmp = m_clrL1;
+            break;
+        case 1:
+            clrTmp = m_clrL2;
+            break;
+        case 2:
+            clrTmp = m_clrL3;
+            break;
+        case 3:
+            clrTmp = m_clrL4;
+            break;
+        case 4:
+            clrTmp = m_clrL5;
+            break;
+        }
+        CPen LinePen(PS_SOLID, 1, clrTmp);
+
+        dcPaint.SelectObject(&LinePen);
+        dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom - 
+            (m_pData[0][i] + 10) / 20.0 * Info.rect.Height());
+        for (int j = 1; j < m_Quantity; j++)
+        {
+            dcPaint.LineTo(Info.rect.left + 5 + (float)j / (m_Quantity - 1) 
+                * (Info.rect.Width() - 5), Info.rect.bottom - 
+                (m_pData[j][i] + 10) / 20.0 * Info.rect.Height());
+        }
+    }
+    
 
 
 }
@@ -358,49 +371,64 @@ void CchartDlg::OnNMClickListctrl(NMHDR *pNMHDR, LRESULT *pResult)
     *pResult = 0;
 }
 
-DWORD CchartDlg::DrawLineThread(LPVOID lpParameter)
+
+DWORD WINAPI CchartDlg::DrawLineThread(LPVOID lpParameter)
 {
+    int index=(int)lpParameter;
 
-    COLORREF clrTmp=RGB(255,0,0);
-    ThreadInfo *Info=(ThreadInfo *)lpParameter;
-    switch (Info->index)
+    CPen LinePen(PS_SOLID, 1, Info.m_clrL[index]);
+    CClientDC dcPaint(Info.m_dlgChart);
+    dcPaint.SelectObject(&LinePen);
+    dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom - 
+        (Info.m_pdata[0][index] + 10) / 20.0 * Info.rect.Height());
+    for (int j = 1; j < Info.m_quantity; j++)
     {
-    case 0:
-        clrTmp = Info->m_clrL[0];
-        break;
-    case 1:
-        clrTmp = Info->m_clrL[1];
-        break;
-    case 2:
-        clrTmp = Info->m_clrL[2];
-        break;
-    case 3:
-        clrTmp = Info->m_clrL[3];
-        break;
-    case 4:
-        clrTmp = Info->m_clrL[4];
-        break;
+        Sleep(200);
+        dcPaint.LineTo(Info.rect.left + 5 + (float)j / (Info.m_quantity - 1) 
+            * (Info.rect.Width() - 5), Info.rect.bottom - 
+            (Info.m_pdata[j][index] + 10) / 20.0 * Info.rect.Height());
     }
-    CPen LinePen(PS_SOLID, 1, clrTmp);
-	/*dcPaint.SelectObject(&LinePen);
-	dcPaint.MoveTo(Info->rect.left + 5, Info->rect.bottom - 
-		(Info->chart->m_pData[0][Info->index] + 10) / 20.0 * Info->rect.Height());
-	for (int j = 1; j < Info->chart->m_Quantity; j++)
-	{
-		dcPaint.LineTo(Info->rect.left + 5 + (float)j / (Info->chart->m_Quantity - 1) 
-			* (Info->rect.Width() - 5), Info->rect.bottom - 
-			(Info->chart->m_pData[j][Info->index] + 10) / 20.0 * Info->rect.Height());
-	}*/
-    Info->dcPaint->SelectObject(&LinePen);
-    Info->dcPaint->MoveTo(Info->rect.left + 5, Info->rect.bottom - 
-        (Info->m_pdata[0][Info->index] + 10) / 20.0 * Info->rect.Height());
-    for (int j = 1; j < Info->m_quantity; j++)
-    {
-        Info->dcPaint->LineTo(Info->rect.left + 5 + (float)j / (Info->m_quantity - 1) 
-            * (Info->rect.Width() - 5), Info->rect.bottom - 
-            (Info->m_pdata[j][Info->index] + 10) / 20.0 * Info->rect.Height());
-    }
-
 
     return 0;
+}
+
+void CchartDlg::PreDrawLine(void)
+{
+   /* if (!m_List.GetItemCount())
+    {
+        return;
+    }*/
+    CRect rectListCtrl, rectWindow;
+    GetDlgItem(IDC_LISTCTRL)->GetClientRect(&rectListCtrl);
+    GetClientRect(&rectWindow);
+    rectDrawing.top = rectListCtrl.bottom + 40;
+    rectDrawing.bottom = rectWindow.bottom - 40;
+    rectDrawing.left = rectWindow.left + 30;
+    rectDrawing.right = rectWindow.right - 20;
+    int y_middle = (rectDrawing.bottom + rectDrawing.top) / 2;
+    CRect rectClear(rectDrawing.left - 30, rectDrawing.top - 20, rectDrawing.right + 20, rectDrawing.bottom + 20);
+    CClientDC dcPaint(this);
+    dcPaint.FillSolidRect(rectClear, RGB(255, 255, 255));
+    CPen pen(PS_SOLID, 1, m_clrD);
+    dcPaint.SelectObject(&pen);
+    dcPaint.MoveTo(rectDrawing.left, rectDrawing.bottom);
+    dcPaint.LineTo(rectDrawing.left, rectDrawing.top);
+    dcPaint.LineTo(rectDrawing.left, y_middle);
+    dcPaint.LineTo(rectDrawing.right, y_middle);
+    CFont font;
+    font.CreatePointFont(100,"Consolas");
+    dcPaint.SelectObject(&font);
+    dcPaint.TextOut(rectDrawing.left - 20, rectDrawing.top-5, "10");
+    dcPaint.TextOut(rectDrawing.left - 10, y_middle - 5, "0");
+    dcPaint.TextOut(rectDrawing.left - 25, rectDrawing.bottom - 5, "-10");
+    Info.rect=rectDrawing;
+
+}
+
+void CchartDlg::OnTimer(UINT_PTR nIDEvent)
+{
+    // TODO: 在此添加消息处理程序代码和/或调用默认值
+    GetDlgItem(ID_GENERATE)->EnableWindow(1);
+    KillTimer(1);
+    CDialog::OnTimer(nIDEvent);
 }

@@ -74,30 +74,23 @@ private:
     COLORREF m_clrSelected;
     static DWORD WINAPI DrawLineThread(LPVOID lpParameter);
     CRect rectDrawing;
+    void PreDrawLine(void);
+public:
+    afx_msg void OnTimer(UINT_PTR nIDEvent);
 };
 
 class ThreadInfo
 {
 public:
-	int index;
-	int ** m_pdata;
+	//int index[5];
+	int **m_pdata;
 	CRect rect;
-	CClientDC dcPaint;
 	COLORREF m_clrL[5];
 	int m_quantity;
+    CchartDlg *m_dlgChart;
 
-	ThreadInfo(int index,int m_quantity,CClientDC &dcPaint,int ** &m_pdata,CRect rect,COLORREF m_clrL1,
-		COLORREF m_clrL2,COLORREF m_clrL3,COLORREF m_clrL4,COLORREF m_clrL5)
+	ThreadInfo()
 	{
-		this->index=index;
-		this->m_quantity=m_quantity;
-		this->dcPaint=dcPaint;
-		this->m_pdata=m_pdata;
-		this->rect=rect;
-		m_clrL[0]=m_clrL1;
-		m_clrL[1]=m_clrL2;
-		m_clrL[2]=m_clrL3;
-		m_clrL[3]=m_clrL4;
-		m_clrL[4]=m_clrL5;
+        
 	}
 };
