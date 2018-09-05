@@ -86,7 +86,4 @@ public:
   COLORREF m_clrL[5];
   int m_quantity;
   CchartDlg *m_dlgChart;
-  ThreadInfo()
-  {
-  }
 };
