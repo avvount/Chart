@@ -28,7 +28,7 @@ Eg:
 
 Eg:
 ```cpp
-afx_msg void OnrecvData(WPARAM wParam,LPARAM lParam);
+afx_msg LRESULT OnrecvData(WPARAM wParam,LPARAM lParam);
 ```    
 
 3. 在源文件中`BEGIN_MESSAGE_MAP( )`和`END_MESSAGE_MAP()`之间添加消息映射  
