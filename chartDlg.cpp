@@ -29,6 +29,7 @@ CchartDlg::CchartDlg(CWnd *pParent /*=NULL*/)
     m_clrEvenLine = RGB(255, 255, 0);
     m_clrOddLine = RGB(0, 255, 255);
     m_clrSelected = RGB(0, 100, 100);
+    m_clrStatusBar = RGB(0,0,255);
 }
 
 void CchartDlg::DoDataExchange(CDataExchange *pDX)
@@ -98,6 +99,9 @@ BOOL CchartDlg::OnInitDialog()
     }
     m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
+    CRect rect;
+    m_wndStatusBar.GetItemRect(0,&rect);
+    staticStatus.Create("",WS_CHILD|WS_VISIBLE,rect,&m_wndStatusBar);
     Info.m_dlgChart = this;
 
     return TRUE; // 除非将焦点设置到控件，否则返回 TRUE
@@ -184,7 +188,7 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
         CRect rect;
         GetClientRect(&rect);
         rect.top = rect.bottom - 20;
-        m_wndStatusBar.MoveWindow(&rect);
+        m_wndStatusBar.MoveWindow(rect);
     }
 }
 
@@ -202,6 +206,7 @@ void CchartDlg::OnSetting()
     dlg.m_clrOddLine = m_clrOddLine;
     dlg.m_clrEvenLine = m_clrEvenLine;
     dlg.m_clrSelected = m_clrSelected;
+    dlg.m_clrStatusBar = m_clrStatusBar;
     if (IDOK == dlg.DoModal())
     {
         m_clrD = dlg.m_clrCoordinate;
@@ -213,9 +218,11 @@ void CchartDlg::OnSetting()
         m_clrOddLine = dlg.m_clrOddLine;
         m_clrEvenLine = dlg.m_clrEvenLine;
         m_clrSelected = dlg.m_clrSelected;
+        m_clrStatusBar = dlg.m_clrStatusBar;
         PreDrawLine();
         DrawLine();
         setLineColor();
+        m_wndStatusBar.SetTextColor(m_clrStatusBar);
         m_List.RedrawItems(0, m_List.GetItemCount() - 1);
     }
 }
@@ -293,7 +300,10 @@ void CchartDlg::GenerateList(void)
     CString strStatusInfo;
     strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
         m_Groups, t2 - t1);
-    m_wndStatusBar.SetPaneText(0, strStatusInfo);
+    
+    staticStatus.SetWindowText(strStatusInfo);
+    m_wndStatusBar.SetTextColor(m_clrStatusBar);
+    //m_wndStatusBar.SetPaneText(0, strStatusInfo);
 }
 
 void CchartDlg::DrawLine(void)

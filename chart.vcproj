@@ -194,6 +194,10 @@
 				>
 			</File>
 			<File
+				RelativePath=".\CustomStatusBar.cpp"
+				>
+			</File>
+			<File
 				RelativePath=".\NewListCtrl.cpp"
 				>
 			</File>
@@ -233,6 +237,10 @@
 			</File>
 			<File
 				RelativePath=".\chartDlg.h"
+				>
+			</File>
+			<File
+				RelativePath=".\CustomStatusBar.h"
 				>
 			</File>
 			<File

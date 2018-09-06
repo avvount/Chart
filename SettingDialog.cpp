@@ -30,6 +30,7 @@ void CSettingDialog::DoDataExchange(CDataExchange *pDX)
     DDX_Control(pDX, IDC_ODDLINE, m_btnOddLine);
     DDX_Control(pDX, IDC_EVENLINE, m_btnEvenLine);
     DDX_Control(pDX, IDC_CHOOSENLINE, m_btnSelectedLine);
+    DDX_Control(pDX, IDC_STATUSBAR, m_btnStatusBar);
 }
 
 BEGIN_MESSAGE_MAP(CSettingDialog, CDialog)
@@ -43,6 +44,7 @@ ON_BN_CLICKED(IDC_LINE5, &CSettingDialog::OnBnClickedLine5)
 ON_BN_CLICKED(IDC_ODDLINE, &CSettingDialog::OnBnClickedOddline)
 ON_BN_CLICKED(IDC_EVENLINE, &CSettingDialog::OnBnClickedEvenline)
 ON_BN_CLICKED(IDC_CHOOSENLINE, &CSettingDialog::OnBnClickedChoosenline)
+ON_BN_CLICKED(IDC_STATUSBAR, &CSettingDialog::OnBnClickedStatusbar)
 END_MESSAGE_MAP()
 
 // CSettingDialog 消息处理程序
@@ -85,6 +87,7 @@ BOOL CSettingDialog::OnInitDialog()
     m_btnOddLine.SetFaceColor(m_clrOddLine);
     m_btnEvenLine.SetFaceColor(m_clrEvenLine);
     m_btnSelectedLine.SetFaceColor(m_clrSelected);
+    m_btnStatusBar.SetFaceColor(m_clrStatusBar);
     return 0;
 }
 void CSettingDialog::OnBnClickedLine1()
@@ -172,5 +175,17 @@ void CSettingDialog::OnBnClickedChoosenline()
     {
         m_clrSelected = clrdlg.m_cc.rgbResult;
         m_btnSelectedLine.SetFaceColor(m_clrSelected);
+    }
+}
+
+void CSettingDialog::OnBnClickedStatusbar()
+{
+    // TODO: 在此添加控件通知处理程序代码
+   
+    CColorDialog clrdlg;
+    if (IDOK == clrdlg.DoModal())
+    {
+        m_clrStatusBar = clrdlg.m_cc.rgbResult;
+        m_btnStatusBar.SetFaceColor(m_clrStatusBar);
     }
 }

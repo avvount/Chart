@@ -8,7 +8,7 @@
 #include "afxext.h"
 #include "NewListCtrl.h"
 #include "atltypes.h"
-
+#include "CustomStatusBar.h"
 // CchartDlg ¶Ô»°¿ò
 class CchartDlg : public CDialog
 {
@@ -43,7 +43,8 @@ public:
 private:
   CNewListCtrl m_List;
   int **m_pData;
-  CStatusBar m_wndStatusBar;
+  CCustomStatusBar m_wndStatusBar;
+  CStatic staticStatus;
   int m_Quantity;
   int m_Groups;
 
@@ -61,6 +62,7 @@ private:
   COLORREF m_clrD, m_clrL[5];
   COLORREF m_clrOddLine;
   COLORREF m_clrEvenLine;
+  COLORREF m_clrStatusBar;
 
 public:
   void setLineColor(void);
