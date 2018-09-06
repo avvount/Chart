@@ -18,6 +18,7 @@
 #define IDC_BUTTON2                     1038
 #define ID_GRAYSCHEME                   1038
 #define IDC_BUTTON3                     1039
+#define IDC_PREVIEW                     1039
 #define IDC_CUSTOM1                     1040
 #define IDC_CUSTOM2                     1041
 #define IDC_CUSTOM3                     1042
@@ -30,7 +31,6 @@
 #define IDC_LINE2                       1046
 #define IDC_CUSTOM8                     1047
 #define IDC_LINE3                       1047
-#define IDC_COMBOBOXEX1                 1047
 #define IDC_CUSTOM9                     1048
 #define IDC_STATUSBAR                   1048
 #define IDC_CUSTOM10                    1049

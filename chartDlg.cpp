@@ -155,6 +155,7 @@ void CchartDlg::OnBnClickedGenerate()
         return;
     }
     SendMessage(WM_PAINT);
+
     GetDlgItem(ID_GENERATE)->EnableWindow(0);
     SetTimer(1, 200 * m_Quantity, NULL);
     PreDrawLine();
@@ -182,7 +183,7 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
     CDialog::OnSize(nType, cx, cy);
 
     // TODO: 在此处添加消息处理程序代码
-
+    
     if (m_wndStatusBar.GetSafeHwnd())
     {
         CRect rect;
