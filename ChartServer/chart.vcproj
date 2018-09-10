@@ -2,7 +2,7 @@
 <VisualStudioProject
 	ProjectType="Visual C++"
 	Version="9.00"
-	Name="chart"
+	Name="chartServer"
 	ProjectGUID="{B83930F6-3F08-42A8-9117-2ADAC38FAF92}"
 	RootNamespace="chart"
 	Keyword="MFCProj"
