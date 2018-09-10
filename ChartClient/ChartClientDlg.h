@@ -34,7 +34,6 @@ public:
     
 private:
     CListCtrl m_List;
-public:
     int** m_pdata;
-    afx_msg void OnBnClickedLogout();
+
 };
