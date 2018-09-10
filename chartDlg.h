@@ -9,13 +9,17 @@
 #include "NewListCtrl.h"
 #include "atltypes.h"
 #include "CustomStatusBar.h"
+
+#define UM_SOCK WM_USER+1
 // CchartDlg 对话框
+
+
 class CchartDlg : public CDialog
 {
   // 构造
 public:
   CchartDlg(CWnd *pParent = NULL); // 标准构造函数
-
+  ~CchartDlg();
   // 对话框数据
   enum
   {
@@ -33,6 +37,7 @@ protected:
   virtual BOOL OnInitDialog();
   afx_msg void OnPaint();
   afx_msg HCURSOR OnQueryDragIcon();
+  afx_msg LRESULT OnSock(WPARAM,LPARAM);
   DECLARE_MESSAGE_MAP()
 public:
   afx_msg void OnBnClickedGenerate();
@@ -78,6 +83,10 @@ private:
 
 public:
   afx_msg void OnTimer(UINT_PTR nIDEvent);
+private:
+    SOCKET m_socket;
+protected:
+    bool InitSocket(void);
 };
 
 class ThreadInfo
@@ -88,4 +97,18 @@ public:
   COLORREF m_clrL[5];
   int m_quantity;
   CchartDlg *m_dlgChart;
+};
+
+class TrafficMessage
+{
+public:
+    bool AlreadyLogin;
+    char Username[20];
+    char Passwd[20];
+    int quantity;
+    int group;
+    TrafficMessage()
+    {
+        AlreadyLogin=FALSE;
+    }
 };

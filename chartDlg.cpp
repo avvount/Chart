@@ -52,6 +52,7 @@ ON_WM_GETMINMAXINFO()
 
 ON_NOTIFY(NM_CLICK, IDC_LISTCTRL, &CchartDlg::OnNMClickListctrl)
 ON_WM_TIMER()
+ON_MESSAGE(UM_SOCK,OnSock)
 END_MESSAGE_MAP()
 
 // CchartDlg 消息处理程序
@@ -64,8 +65,11 @@ BOOL CchartDlg::OnInitDialog()
     //  执行此操作
     SetIcon(m_hIcon, TRUE);  // 设置大图标
     SetIcon(m_hIcon, FALSE); // 设置小图标
-
     // TODO: 在此添加额外的初始化代码
+
+    //初始化套接字
+    InitSocket();
+
     //菜单
     CMenu menu;
     menu.LoadMenu(IDR_MAINMENU);
@@ -149,6 +153,8 @@ HCURSOR CchartDlg::OnQueryDragIcon()
 void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
+    
+    
     GenerateList();
     if(!m_List.GetItemCount())
     {
@@ -247,7 +253,6 @@ void CchartDlg::ResizeList(void)
 
 void CchartDlg::GenerateList(void)
 {
-
     if (m_pData)
     {
         for (int i = 0; i < m_Quantity; i++)
@@ -257,7 +262,6 @@ void CchartDlg::GenerateList(void)
         delete[] m_pData;
         m_List.DeleteAllItems();
     }
-
     m_Quantity = GetDlgItemInt(IDC_COMBO_Quantity);
     m_Groups = GetDlgItemInt(IDC_COMBO_GROUPS);
 
@@ -275,7 +279,7 @@ void CchartDlg::GenerateList(void)
         MessageBox(str);
         return;
     }
-
+    
     setLineColor();
     int t1 = GetTickCount();
     m_pData = new int *[m_Quantity];
@@ -416,4 +420,84 @@ void CchartDlg::OnTimer(UINT_PTR nIDEvent)
     GetDlgItem(ID_GENERATE)->EnableWindow(1);
     KillTimer(1);
     CDialog::OnTimer(nIDEvent);
+}
+
+bool CchartDlg::InitSocket(void)
+{
+    m_socket=WSASocket(AF_INET,SOCK_STREAM,0,NULL,0,0);
+    if (INVALID_SOCKET==m_socket)
+    {
+        MessageBox("创建套接字失败 ！");
+        return false;
+    }
+    sockaddr_in addrSock;
+    addrSock.sin_addr.S_un.S_addr=htonl(ADDR_ANY);
+    addrSock.sin_family=AF_INET;
+    addrSock.sin_port=htons(6001);
+    if (SOCKET_ERROR==bind(m_socket,(sockaddr *)&addrSock,sizeof(sockaddr)))
+    {
+        MessageBox("套接字绑定失败 ！");
+        return FALSE;
+    }
+    listen(m_socket,5);
+    if (SOCKET_ERROR==WSAAsyncSelect(m_socket,m_hWnd,UM_SOCK,FD_ACCEPT|FD_READ))
+    {
+        MessageBox("注册网络读取事件失败 ！");
+        return FALSE;
+    }
+    return TRUE;
+}
+
+LRESULT CchartDlg::OnSock(WPARAM wParam,LPARAM lParam)
+{
+    static SOCKET sockConn;
+    switch (LOBYTE(lParam))
+    {
+    case FD_ACCEPT:
+        sockaddr_in addrClient;
+        int len;
+        len=sizeof(sockaddr);
+        sockConn=accept(m_socket,(sockaddr *)&addrClient,&len);
+    	break;
+    case FD_READ:
+        char recvBuf[100];
+        recv(sockConn,recvBuf,100,0);
+        TrafficMessage *ptfmg=(TrafficMessage *)recvBuf;
+        bool sendBuf=false;
+        if (strcmp(ptfmg->Username,"admin")==0&&strcmp(ptfmg->Passwd,"123456")==0)
+        {
+            if (ptfmg->AlreadyLogin)
+            {
+                CString str;
+                str.Format("%d",ptfmg->quantity);
+                SetDlgItemText(IDC_COMBO_Quantity,str);
+                str.Format("%d",ptfmg->group);
+                SetDlgItemText(IDC_COMBO_GROUPS,str);
+                OnBnClickedGenerate();
+                for (int i=0;i<m_Quantity;i++)
+                {
+                    send(sockConn,(char *)m_pData[i],m_Groups*sizeof(int),0);
+                }
+            }
+            else    
+            {
+                sendBuf=true;
+                send(sockConn,(char *)&sendBuf,1,0);
+            }
+        }
+        else    
+        {
+            send(sockConn,(char *)&sendBuf,1,0);
+        }
+        break;
+    }
+    return true;
+}
+
+CchartDlg::~CchartDlg()
+{
+    if (m_socket)
+    {
+        closesocket(m_socket);
+    }
 }

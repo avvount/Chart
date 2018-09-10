@@ -18,7 +18,7 @@ class CchartApp : public CWinAppEx
 {
   public:
 	CchartApp();
-
+    ~CchartApp();
 	// ÖØÐ´
   public:
 	virtual BOOL InitInstance();

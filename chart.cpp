@@ -41,23 +41,36 @@ BOOL CchartApp::InitInstance()
 	// 更改用于存储设置的注册表项
 	// TODO: 应适当修改该字符串，
 	// 例如修改为公司或组织名
-	SetRegistryKey(_T("图表练习"));
+	SetRegistryKey(_T("图表练习Server"));
 
+
+    WORD wVersionRequested;
+    WSADATA wsaData;
+    int err;
+
+    wVersionRequested=MAKEWORD(2,2);
+    err=WSAStartup(wVersionRequested,&wsaData);
+    if (err)
+    {
+        return FALSE;
+    }
+
+    if (LOBYTE(wsaData.wVersion)!=2||HIBYTE(wsaData.wVersion)!=2)
+    {
+        WSACleanup();
+        return FALSE;
+    }
 	CchartDlg dlg;
 	m_pMainWnd = &dlg;
-	INT_PTR nResponse = dlg.DoModal();
-	if (nResponse == IDOK)
-	{
-		// TODO: 在此放置处理何时用
-		//  “确定”来关闭对话框的代码
-	}
-	else if (nResponse == IDCANCEL)
-	{
-		// TODO: 在此放置处理何时用
-		//  “取消”来关闭对话框的代码
-	}
+	dlg.DoModal();
+	
 
 	// 由于对话框已关闭，所以将返回 FALSE 以便退出应用程序，
 	//  而不是启动应用程序的消息泵。
 	return FALSE;
+}
+
+CchartApp::~CchartApp()
+{
+    WSACleanup();
 }
