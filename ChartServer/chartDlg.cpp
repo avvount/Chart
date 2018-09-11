@@ -85,7 +85,7 @@ BOOL CchartDlg::OnInitDialog()
     }
     //CListCtrl表头
     m_List.ModifyStyle(0, LVS_REPORT); // 报表模式
-    m_List.SetExtendedStyle(LVS_EX_GRIDLINES /* | LVS_EX_FULLROWSELECT*/);
+    m_List.SetExtendedStyle(LVS_EX_GRIDLINES);
     m_List.InsertColumn(0, "编号");
     m_List.InsertColumn(1, "第一组");
     m_List.InsertColumn(2, "第二组");
@@ -95,7 +95,6 @@ BOOL CchartDlg::OnInitDialog()
 
     //创建状态栏
     UINT indicators[] = {ID_SEPARATOR};
-
     if (!m_wndStatusBar.Create(this))
     {
         TRACE0("未能创建状态栏\n");
@@ -463,7 +462,8 @@ LRESULT CchartDlg::OnSock(WPARAM wParam, LPARAM lParam)
         recv(sockConn, recvBuf, 100, 0);
         TrafficMessage *ptfmg = (TrafficMessage *)recvBuf;
         bool sendBuf = false;
-        if (strcmp(ptfmg->Username, "admin") == 0 && strcmp(ptfmg->Passwd, "123456") == 0)
+        if (strcmp(ptfmg->Username, "admin") == 0 
+            && strcmp(ptfmg->Passwd, "123456") == 0)
         {
             if (ptfmg->AlreadyLogin)
             {

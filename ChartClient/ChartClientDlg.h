@@ -5,23 +5,24 @@
 #pragma once
 #include "afxcmn.h"
 
-
 // CChartClientDlg 对话框
 class CChartClientDlg : public CDialog
 {
     // 构造
-public:
-    CChartClientDlg(CWnd* pParent = NULL);	// 标准构造函数
+  public:
+    CChartClientDlg(CWnd *pParent = NULL); // 标准构造函数
     ~CChartClientDlg();
     // 对话框数据
-    enum { IDD = IDD_CHARTCLIENT_DIALOG };
+    enum
+    {
+        IDD = IDD_CHARTCLIENT_DIALOG
+    };
 
-protected:
-    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
-
+  protected:
+    virtual void DoDataExchange(CDataExchange *pDX); // DDX/DDV 支持
 
     // 实现
-protected:
+  protected:
     HICON m_hIcon;
 
     // 生成的消息映射函数
@@ -29,13 +30,13 @@ protected:
     afx_msg void OnPaint();
     afx_msg HCURSOR OnQueryDragIcon();
     DECLARE_MESSAGE_MAP()
-public:
+  public:
     afx_msg void OnBnClickedBtnsend();
 
-private:
+  private:
     CListCtrl m_List;
-    int** m_pdata;
+    int **m_pdata;
 
-public:
+  public:
     afx_msg void OnBnClickedBtnlogout();
 };

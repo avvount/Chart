@@ -5,32 +5,28 @@
 #include "ChartClient.h"
 #include "LoginDlg.h"
 
-
 // CLoginDlg 对话框
 
 IMPLEMENT_DYNAMIC(CLoginDlg, CDialog)
 
-CLoginDlg::CLoginDlg(CWnd* pParent /*=NULL*/)
-: CDialog(CLoginDlg::IDD, pParent)
+CLoginDlg::CLoginDlg(CWnd *pParent /*=NULL*/)
+    : CDialog(CLoginDlg::IDD, pParent)
 {
-    m_hIcon=AfxGetApp()->LoadIcon(IDI_LOGIN);
-
+    m_hIcon = AfxGetApp()->LoadIcon(IDI_LOGIN);
 }
 
 CLoginDlg::~CLoginDlg()
 {
 }
 
-void CLoginDlg::DoDataExchange(CDataExchange* pDX)
+void CLoginDlg::DoDataExchange(CDataExchange *pDX)
 {
     CDialog::DoDataExchange(pDX);
 }
 
-
 BEGIN_MESSAGE_MAP(CLoginDlg, CDialog)
-    ON_BN_CLICKED(IDC_BTNLOGIN, &CLoginDlg::OnBnClickedBtnlogin)
+ON_BN_CLICKED(IDC_BTNLOGIN, &CLoginDlg::OnBnClickedBtnlogin)
 END_MESSAGE_MAP()
-
 
 // CLoginDlg 消息处理程序
 
@@ -44,23 +40,23 @@ void CLoginDlg::OnBnClickedBtnlogin()
     ((CIPAddressCtrl *)GetDlgItem(IDC_IPADDRESS1))->GetAddress(dwIP);
 
     CString strTemp;
-    GetDlgItemText(IDC_EDIT_USERNAME,strTemp);
-    strcpy(tfmg.Username,strTemp.GetBuffer());
-    GetDlgItemText(IDC_EDIT_PASSWD,strTemp);
-    strcpy(tfmg.Passwd,strTemp.GetBuffer());
+    GetDlgItemText(IDC_EDIT_USERNAME, strTemp);
+    strcpy(tfmg.Username, strTemp.GetBuffer());
+    GetDlgItemText(IDC_EDIT_PASSWD, strTemp);
+    strcpy(tfmg.Passwd, strTemp.GetBuffer());
 
-    sockClient=socket(AF_INET,SOCK_STREAM,0);
-    addrSrv.sin_addr.S_un.S_addr=htonl(dwIP);
-    addrSrv.sin_port=htons(6001);
-    addrSrv.sin_family=AF_INET;
-    connect(sockClient,(sockaddr *)&addrSrv,sizeof(sockaddr));
-    send(sockClient,(char *)&tfmg,sizeof(tfmg),0);
-    bool recvBuf=false;
-    recv(sockClient,(char *)&recvBuf,1,0);
+    sockClient = socket(AF_INET, SOCK_STREAM, 0);
+    addrSrv.sin_addr.S_un.S_addr = htonl(dwIP);
+    addrSrv.sin_port = htons(6001);
+    addrSrv.sin_family = AF_INET;
+    connect(sockClient, (sockaddr *)&addrSrv, sizeof(sockaddr));
+    send(sockClient, (char *)&tfmg, sizeof(tfmg), 0);
+    bool recvBuf = false;
+    recv(sockClient, (char *)&recvBuf, 1, 0);
 
-    if (recvBuf)//登录成功
+    if (recvBuf) //登录成功
     {
-        tfmg.AlreadyLogin=true;
+        tfmg.AlreadyLogin = true;
         EndDialog(IDC_BTNLOGIN);
     }
     else
@@ -72,10 +68,10 @@ void CLoginDlg::OnBnClickedBtnlogin()
 BOOL CLoginDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-    SetIcon(m_hIcon,true);
-    SetIcon(m_hIcon,false);
+    SetIcon(m_hIcon, true);
+    SetIcon(m_hIcon, false);
     // TODO:  在此添加额外的初始化
-    ((CIPAddressCtrl *)GetDlgItem(IDC_IPADDRESS1))->SetAddress(127,0,0,1);
-    return TRUE;  // return TRUE unless you set the focus to a control
+    ((CIPAddressCtrl *)GetDlgItem(IDC_IPADDRESS1))->SetAddress(127, 0, 0, 1);
+    return TRUE; // return TRUE unless you set the focus to a control
     // 异常: OCX 属性页应返回 FALSE
 }
