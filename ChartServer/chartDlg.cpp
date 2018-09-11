@@ -456,40 +456,39 @@ LRESULT CchartDlg::OnSock(WPARAM wParam, LPARAM lParam)
         sockConn = accept(m_socket, (sockaddr *)&addrClient, &len);
         break;
     case FD_READ:
-    {
-
-        char recvBuf[100];
-        recv(sockConn, recvBuf, 100, 0);
-        TrafficMessage *ptfmg = (TrafficMessage *)recvBuf;
-        bool sendBuf = false;
-        if (strcmp(ptfmg->Username, "admin") == 0 
-            && strcmp(ptfmg->Passwd, "123456") == 0)
         {
-            if (ptfmg->AlreadyLogin)
+            char recvBuf[100];
+            recv(sockConn, recvBuf, 100, 0);
+            TrafficMessage *ptfmg = (TrafficMessage *)recvBuf;
+            bool sendBuf = false;
+            if (strcmp(ptfmg->Username, "admin") == 0 
+                && strcmp(ptfmg->Passwd, "123456") == 0)
             {
-                CString str;
-                str.Format("%d", ptfmg->quantity);
-                SetDlgItemText(IDC_COMBO_QUANTITY, str);
-                str.Format("%d", ptfmg->group);
-                SetDlgItemText(IDC_COMBO_GROUPS, str);
-                OnBnClickedGenerate();
-                for (int i = 0; i < m_Quantity; i++)
+                if (ptfmg->AlreadyLogin)
                 {
-                    send(sockConn, (char *)m_pData[i], m_Groups * sizeof(int), 0);
+                    CString str;
+                    str.Format("%d", ptfmg->quantity);
+                    SetDlgItemText(IDC_COMBO_QUANTITY, str);
+                    str.Format("%d", ptfmg->group);
+                    SetDlgItemText(IDC_COMBO_GROUPS, str);
+                    OnBnClickedGenerate();
+                    for (int i = 0; i < m_Quantity; i++)
+                    {
+                        send(sockConn, (char *)m_pData[i], m_Groups * sizeof(int), 0);
+                    }
+                }
+                else
+                {
+                    sendBuf = true;
+                    send(sockConn, (char *)&sendBuf, 1, 0);
                 }
             }
             else
             {
-                sendBuf = true;
                 send(sockConn, (char *)&sendBuf, 1, 0);
             }
+            break;
         }
-        else
-        {
-            send(sockConn, (char *)&sendBuf, 1, 0);
-        }
-        break;
-    }
     default:
         break;
     }

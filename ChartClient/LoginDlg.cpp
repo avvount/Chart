@@ -33,7 +33,6 @@ END_MESSAGE_MAP()
 void CLoginDlg::OnBnClickedBtnlogin()
 {
     // TODO: 在此添加控件通知处理程序代码
-    OutputDebugString("faegwg");
     extern TrafficMessage tfmg;
     extern SOCKET sockClient;
     extern sockaddr_in addrSrv;

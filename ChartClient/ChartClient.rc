@@ -104,6 +104,7 @@ BEGIN
     LTEXT           "IP",IDC_STATIC,66,48,9,9
     LTEXT           "用户名",IDC_STATIC,50,91,26,9
     LTEXT           "密码",IDC_STATIC,58,134,17,9
+    LTEXT           "用户名：admin\n密码：123456",IDC_STATIC,79,15,74,18
 END
 
 
