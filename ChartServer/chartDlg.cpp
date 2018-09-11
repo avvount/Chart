@@ -29,7 +29,7 @@ CchartDlg::CchartDlg(CWnd *pParent /*=NULL*/)
     m_clrEvenLine = RGB(255, 255, 0);
     m_clrOddLine = RGB(0, 255, 255);
     m_clrSelected = RGB(0, 100, 100);
-    m_clrStatusBar = RGB(0,0,255);
+    m_clrStatusBar = RGB(0, 0, 255);
 }
 
 void CchartDlg::DoDataExchange(CDataExchange *pDX)
@@ -52,7 +52,7 @@ ON_WM_GETMINMAXINFO()
 
 ON_NOTIFY(NM_CLICK, IDC_LISTCTRL, &CchartDlg::OnNMClickListctrl)
 ON_WM_TIMER()
-ON_MESSAGE(UM_SOCK,OnSock)
+ON_MESSAGE(UM_SOCK, OnSock)
 END_MESSAGE_MAP()
 
 // CchartDlg 消息处理程序
@@ -77,11 +77,11 @@ BOOL CchartDlg::OnInitDialog()
     menu.Detach();
     //下拉选择框
     CString strTemp;
-    ((CComboBox *)GetDlgItem(IDC_COMBO_Quantity))->ResetContent(); //消除现有所有内容
+    ((CComboBox *)GetDlgItem(IDC_COMBO_QUANTITY))->ResetContent(); //消除现有所有内容
     for (int i = 1; i <= MAXQUANTITY; i++)
     {
         strTemp.Format("%d", i);
-        ((CComboBox *)GetDlgItem(IDC_COMBO_Quantity))->AddString(strTemp);
+        ((CComboBox *)GetDlgItem(IDC_COMBO_QUANTITY))->AddString(strTemp);
     }
     //CListCtrl表头
     m_List.ModifyStyle(0, LVS_REPORT); // 报表模式
@@ -104,8 +104,8 @@ BOOL CchartDlg::OnInitDialog()
     m_wndStatusBar.SetIndicators(indicators, sizeof(indicators) / sizeof(UINT));
     RepositionBars(AFX_IDW_CONTROLBAR_FIRST, AFX_IDW_CONTROLBAR_LAST, 0);
     CRect rect;
-    m_wndStatusBar.GetItemRect(0,&rect);
-    staticStatus.Create("",WS_CHILD|WS_VISIBLE,rect,&m_wndStatusBar);
+    m_wndStatusBar.GetItemRect(0, &rect);
+    staticStatus.Create("", WS_CHILD | WS_VISIBLE, rect, &m_wndStatusBar);
     Info.m_dlgChart = this;
 
     return TRUE; // 除非将焦点设置到控件，否则返回 TRUE
@@ -153,10 +153,9 @@ HCURSOR CchartDlg::OnQueryDragIcon()
 void CchartDlg::OnBnClickedGenerate()
 {
     // TODO: 在此添加控件通知处理程序代码
-    
-    
+
     GenerateList();
-    if(!m_List.GetItemCount())
+    if (!m_List.GetItemCount())
     {
         return;
     }
@@ -189,7 +188,7 @@ void CchartDlg::OnSize(UINT nType, int cx, int cy)
     CDialog::OnSize(nType, cx, cy);
 
     // TODO: 在此处添加消息处理程序代码
-    
+
     if (m_wndStatusBar.GetSafeHwnd())
     {
         CRect rect;
@@ -262,11 +261,11 @@ void CchartDlg::GenerateList(void)
         delete[] m_pData;
         m_List.DeleteAllItems();
     }
-    m_Quantity = GetDlgItemInt(IDC_COMBO_Quantity);
+    m_Quantity = GetDlgItemInt(IDC_COMBO_QUANTITY);
     m_Groups = GetDlgItemInt(IDC_COMBO_GROUPS);
 
     CString str;
-    if (m_Quantity<1)
+    if (m_Quantity < 1)
     {
         str = "数量应大于0\n";
     }
@@ -279,7 +278,7 @@ void CchartDlg::GenerateList(void)
         MessageBox(str);
         return;
     }
-    
+
     setLineColor();
     int t1 = GetTickCount();
     m_pData = new int *[m_Quantity];
@@ -304,8 +303,8 @@ void CchartDlg::GenerateList(void)
     Info.m_pdata = m_pData;
     CString strStatusInfo;
     strStatusInfo.Format("测试数据数量: %d × %d ,耗时 %d ms", m_Quantity,
-        m_Groups, t2 - t1);
-    
+                         m_Groups, t2 - t1);
+
     staticStatus.SetWindowText(strStatusInfo);
     m_wndStatusBar.SetTextColor(m_clrStatusBar);
     //m_wndStatusBar.SetPaneText(0, strStatusInfo);
@@ -323,12 +322,11 @@ void CchartDlg::DrawLine(void)
         CPen LinePen(PS_SOLID, 1, m_clrL[i]);
         dcPaint.SelectObject(&LinePen);
         dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom -
-            (m_pData[0][i] + 10) / 20.0 * Info.rect.Height());
+                                               (m_pData[0][i] + 10) / 20.0 * Info.rect.Height());
         for (int j = 1; j < m_Quantity; j++)
         {
-            dcPaint.LineTo(Info.rect.left + 5 + (float)j / (m_Quantity - 1)
-                * (Info.rect.Width() - 5), Info.rect.bottom -
-                (m_pData[j][i] + 10) / 20.0 * Info.rect.Height());
+            dcPaint.LineTo(Info.rect.left + 5 + (float)j / (m_Quantity - 1) * (Info.rect.Width() - 5), Info.rect.bottom -
+                                                                                                           (m_pData[j][i] + 10) / 20.0 * Info.rect.Height());
         }
     }
 }
@@ -374,13 +372,12 @@ DWORD WINAPI CchartDlg::DrawLineThread(LPVOID lpParameter)
     CClientDC dcPaint(Info.m_dlgChart);
     dcPaint.SelectObject(&LinePen);
     dcPaint.MoveTo(Info.rect.left + 5, Info.rect.bottom -
-        (Info.m_pdata[0][index] + 10) / 20.0 * Info.rect.Height());
+                                           (Info.m_pdata[0][index] + 10) / 20.0 * Info.rect.Height());
     for (int j = 1; j < Info.m_quantity; j++)
     {
         Sleep(200);
-        dcPaint.LineTo(Info.rect.left + 5 + (float)j / (Info.m_quantity - 1) 
-            * (Info.rect.Width() - 5), Info.rect.bottom -
-            (Info.m_pdata[j][index] + 10) / 20.0 * Info.rect.Height());
+        dcPaint.LineTo(Info.rect.left + 5 + (float)j / (Info.m_quantity - 1) * (Info.rect.Width() - 5), Info.rect.bottom -
+                                                                                                            (Info.m_pdata[j][index] + 10) / 20.0 * Info.rect.Height());
     }
 
     return 0;
@@ -424,23 +421,23 @@ void CchartDlg::OnTimer(UINT_PTR nIDEvent)
 
 bool CchartDlg::InitSocket(void)
 {
-    m_socket=WSASocket(AF_INET,SOCK_STREAM,0,NULL,0,0);
-    if (INVALID_SOCKET==m_socket)
+    m_socket = WSASocket(AF_INET, SOCK_STREAM, 0, NULL, 0, 0);
+    if (INVALID_SOCKET == m_socket)
     {
         MessageBox("创建套接字失败 ！");
         return false;
     }
     sockaddr_in addrSock;
-    addrSock.sin_addr.S_un.S_addr=htonl(ADDR_ANY);
-    addrSock.sin_family=AF_INET;
-    addrSock.sin_port=htons(6001);
-    if (SOCKET_ERROR==bind(m_socket,(sockaddr *)&addrSock,sizeof(sockaddr)))
+    addrSock.sin_addr.S_un.S_addr = htonl(ADDR_ANY);
+    addrSock.sin_family = AF_INET;
+    addrSock.sin_port = htons(6001);
+    if (SOCKET_ERROR == bind(m_socket, (sockaddr *)&addrSock, sizeof(sockaddr)))
     {
         MessageBox("套接字绑定失败 ！");
         return FALSE;
     }
-    listen(m_socket,5);
-    if (SOCKET_ERROR==WSAAsyncSelect(m_socket,m_hWnd,UM_SOCK,FD_ACCEPT|FD_READ))
+    listen(m_socket, 5);
+    if (SOCKET_ERROR == WSAAsyncSelect(m_socket, m_hWnd, UM_SOCK, FD_ACCEPT | FD_READ))
     {
         MessageBox("注册网络读取事件失败 ！");
         return FALSE;
@@ -448,7 +445,7 @@ bool CchartDlg::InitSocket(void)
     return TRUE;
 }
 
-LRESULT CchartDlg::OnSock(WPARAM wParam,LPARAM lParam)
+LRESULT CchartDlg::OnSock(WPARAM wParam, LPARAM lParam)
 {
     static SOCKET sockConn;
     switch (LOBYTE(lParam))
@@ -456,39 +453,44 @@ LRESULT CchartDlg::OnSock(WPARAM wParam,LPARAM lParam)
     case FD_ACCEPT:
         sockaddr_in addrClient;
         int len;
-        len=sizeof(sockaddr);
-        sockConn=accept(m_socket,(sockaddr *)&addrClient,&len);
-    	break;
+        len = sizeof(sockaddr);
+        sockConn = accept(m_socket, (sockaddr *)&addrClient, &len);
+        break;
     case FD_READ:
+    {
+
         char recvBuf[100];
-        recv(sockConn,recvBuf,100,0);
-        TrafficMessage *ptfmg=(TrafficMessage *)recvBuf;
-        bool sendBuf=false;
-        if (strcmp(ptfmg->Username,"admin")==0&&strcmp(ptfmg->Passwd,"123456")==0)
+        recv(sockConn, recvBuf, 100, 0);
+        TrafficMessage *ptfmg = (TrafficMessage *)recvBuf;
+        bool sendBuf = false;
+        if (strcmp(ptfmg->Username, "admin") == 0 && strcmp(ptfmg->Passwd, "123456") == 0)
         {
             if (ptfmg->AlreadyLogin)
             {
                 CString str;
-                str.Format("%d",ptfmg->quantity);
-                SetDlgItemText(IDC_COMBO_Quantity,str);
-                str.Format("%d",ptfmg->group);
-                SetDlgItemText(IDC_COMBO_GROUPS,str);
+                str.Format("%d", ptfmg->quantity);
+                SetDlgItemText(IDC_COMBO_QUANTITY, str);
+                str.Format("%d", ptfmg->group);
+                SetDlgItemText(IDC_COMBO_GROUPS, str);
                 OnBnClickedGenerate();
-                for (int i=0;i<m_Quantity;i++)
+                for (int i = 0; i < m_Quantity; i++)
                 {
-                    send(sockConn,(char *)m_pData[i],m_Groups*sizeof(int),0);
+                    send(sockConn, (char *)m_pData[i], m_Groups * sizeof(int), 0);
                 }
             }
-            else    
+            else
             {
-                sendBuf=true;
-                send(sockConn,(char *)&sendBuf,1,0);
+                sendBuf = true;
+                send(sockConn, (char *)&sendBuf, 1, 0);
             }
         }
-        else    
+        else
         {
-            send(sockConn,(char *)&sendBuf,1,0);
+            send(sockConn, (char *)&sendBuf, 1, 0);
         }
+        break;
+    }
+    default:
         break;
     }
     return true;

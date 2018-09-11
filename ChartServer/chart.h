@@ -16,11 +16,11 @@
 
 class CchartApp : public CWinAppEx
 {
-  public:
+public:
 	CchartApp();
-    ~CchartApp();
+	~CchartApp();
 	// ÷ÿ–¥
-  public:
+public:
 	virtual BOOL InitInstance();
 
 	//  µœ÷

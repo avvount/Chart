@@ -11,8 +11,9 @@
 IMPLEMENT_DYNAMIC(CLoginDlg, CDialog)
 
 CLoginDlg::CLoginDlg(CWnd* pParent /*=NULL*/)
-	: CDialog(CLoginDlg::IDD, pParent)
+: CDialog(CLoginDlg::IDD, pParent)
 {
+    m_hIcon=AfxGetApp()->LoadIcon(IDI_LOGIN);
 
 }
 
@@ -22,7 +23,7 @@ CLoginDlg::~CLoginDlg()
 
 void CLoginDlg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialog::DoDataExchange(pDX);
+    CDialog::DoDataExchange(pDX);
 }
 
 
@@ -41,13 +42,12 @@ void CLoginDlg::OnBnClickedBtnlogin()
     extern sockaddr_in addrSrv;
     DWORD dwIP;
     ((CIPAddressCtrl *)GetDlgItem(IDC_IPADDRESS1))->GetAddress(dwIP);
-    
+
     CString strTemp;
     GetDlgItemText(IDC_EDIT_USERNAME,strTemp);
     strcpy(tfmg.Username,strTemp.GetBuffer());
     GetDlgItemText(IDC_EDIT_PASSWD,strTemp);
     strcpy(tfmg.Passwd,strTemp.GetBuffer());
-
 
     sockClient=socket(AF_INET,SOCK_STREAM,0);
     addrSrv.sin_addr.S_un.S_addr=htonl(dwIP);
@@ -57,8 +57,8 @@ void CLoginDlg::OnBnClickedBtnlogin()
     send(sockClient,(char *)&tfmg,sizeof(tfmg),0);
     bool recvBuf=false;
     recv(sockClient,(char *)&recvBuf,1,0);
-    
-    if (recvBuf)
+
+    if (recvBuf)//登录成功
     {
         tfmg.AlreadyLogin=true;
         EndDialog(IDC_BTNLOGIN);
@@ -72,7 +72,8 @@ void CLoginDlg::OnBnClickedBtnlogin()
 BOOL CLoginDlg::OnInitDialog()
 {
     CDialog::OnInitDialog();
-
+    SetIcon(m_hIcon,true);
+    SetIcon(m_hIcon,false);
     // TODO:  在此添加额外的初始化
     ((CIPAddressCtrl *)GetDlgItem(IDC_IPADDRESS1))->SetAddress(127,0,0,1);
     return TRUE;  // return TRUE unless you set the focus to a control

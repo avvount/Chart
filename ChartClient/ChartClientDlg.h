@@ -9,31 +9,33 @@
 // CChartClientDlg 对话框
 class CChartClientDlg : public CDialog
 {
-// 构造
+    // 构造
 public:
-	CChartClientDlg(CWnd* pParent = NULL);	// 标准构造函数
+    CChartClientDlg(CWnd* pParent = NULL);	// 标准构造函数
     ~CChartClientDlg();
-// 对话框数据
-	enum { IDD = IDD_CHARTCLIENT_DIALOG };
+    // 对话框数据
+    enum { IDD = IDD_CHARTCLIENT_DIALOG };
 
-	protected:
-	virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
-
-
-// 实现
 protected:
-	HICON m_hIcon;
+    virtual void DoDataExchange(CDataExchange* pDX);	// DDX/DDV 支持
 
-	// 生成的消息映射函数
-	virtual BOOL OnInitDialog();
-	afx_msg void OnPaint();
-	afx_msg HCURSOR OnQueryDragIcon();
-	DECLARE_MESSAGE_MAP()
+
+    // 实现
+protected:
+    HICON m_hIcon;
+
+    // 生成的消息映射函数
+    virtual BOOL OnInitDialog();
+    afx_msg void OnPaint();
+    afx_msg HCURSOR OnQueryDragIcon();
+    DECLARE_MESSAGE_MAP()
 public:
     afx_msg void OnBnClickedBtnsend();
-    
+
 private:
     CListCtrl m_List;
     int** m_pdata;
 
+public:
+    afx_msg void OnBnClickedBtnlogout();
 };

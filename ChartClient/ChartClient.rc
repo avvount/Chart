@@ -71,6 +71,7 @@ END
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
 IDR_MAINFRAME           ICON                    "res\\ChartClient.ico"
+IDI_LOGIN               ICON                    "res\\Login.ico"
 
 /////////////////////////////////////////////////////////////////////////////
 //
@@ -83,10 +84,11 @@ EXSTYLE WS_EX_APPWINDOW
 CAPTION "Í¼±íÁ·Ï°Client"
 FONT 9, "MS Shell Dlg", 0, 0, 0x1
 BEGIN
-    EDITTEXT        IDC_EDIT_COMMAND,36,18,278,12,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_COMMAND,41,18,230,12,ES_AUTOHSCROLL
     LTEXT           "ÃüÁî",IDC_STATIC,15,19,15,8
     CONTROL         "",IDC_LIST1,"SysListView32",LVS_ALIGNLEFT | WS_BORDER | WS_TABSTOP,15,37,364,189
-    DEFPUSHBUTTON   "·¢ËÍ",IDC_BTNSEND,336,17,43,13
+    DEFPUSHBUTTON   "·¢ËÍ",IDC_BTNSEND,283,17,43,13
+    PUSHBUTTON      "×¢Ïú",IDC_BTNLOGOUT,336,17,43,13
 END
 
 IDD_DLGLOGIN DIALOGEX 0, 0, 267, 224

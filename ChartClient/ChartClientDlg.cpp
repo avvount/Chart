@@ -40,6 +40,7 @@ BEGIN_MESSAGE_MAP(CChartClientDlg, CDialog)
 	ON_WM_QUERYDRAGICON()
 	//}}AFX_MSG_MAP
     ON_BN_CLICKED(IDC_BTNSEND, &CChartClientDlg::OnBnClickedBtnsend)
+    ON_BN_CLICKED(IDC_BTNLOGOUT, &CChartClientDlg::OnBnClickedBtnlogout)
 END_MESSAGE_MAP()
 
 
@@ -132,7 +133,7 @@ void CChartClientDlg::OnBnClickedBtnsend()
     CString strCommand=strTemp.Left(firstIndex);
     if (strCommand.Compare("test"))
     {
-        MessageBox("请输入正确指令");
+        MessageBox("test [column] [row]","Usage");
         return;
     }
     CString strQuantity=strTemp.Left(lastIndex).Right(lastIndex-firstIndex-1);
@@ -141,7 +142,7 @@ void CChartClientDlg::OnBnClickedBtnsend()
     tfmg.group=atoi(strGroup.GetBuffer());
     if (!tfmg.quantity||!tfmg.group)
     {
-        MessageBox("请输入正确参数");
+        MessageBox("请输入正确参数","参数错误");
         return ;
     }
     send(sockClient,(char *)&tfmg,sizeof(tfmg),0);
@@ -172,3 +173,10 @@ void CChartClientDlg::OnBnClickedBtnsend()
 }
 
 
+
+void CChartClientDlg::OnBnClickedBtnlogout()
+{
+    // TODO: 在此添加控件通知处理程序代码
+    WinExec(__argv[0],SW_SHOW);
+    EndDialog(IDOK);
+}

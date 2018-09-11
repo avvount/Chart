@@ -181,7 +181,7 @@ void CSettingDialog::OnBnClickedChoosenline()
 void CSettingDialog::OnBnClickedStatusbar()
 {
     // TODO: 在此添加控件通知处理程序代码
-   
+
     CColorDialog clrdlg;
     if (IDOK == clrdlg.DoModal())
     {

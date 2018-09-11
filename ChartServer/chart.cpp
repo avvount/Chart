@@ -43,27 +43,25 @@ BOOL CchartApp::InitInstance()
 	// 例如修改为公司或组织名
 	SetRegistryKey(_T("图表练习Server"));
 
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int err;
 
-    WORD wVersionRequested;
-    WSADATA wsaData;
-    int err;
+	wVersionRequested = MAKEWORD(2, 2);
+	err = WSAStartup(wVersionRequested, &wsaData);
+	if (err)
+	{
+		return FALSE;
+	}
 
-    wVersionRequested=MAKEWORD(2,2);
-    err=WSAStartup(wVersionRequested,&wsaData);
-    if (err)
-    {
-        return FALSE;
-    }
-
-    if (LOBYTE(wsaData.wVersion)!=2||HIBYTE(wsaData.wVersion)!=2)
-    {
-        WSACleanup();
-        return FALSE;
-    }
+	if (LOBYTE(wsaData.wVersion) != 2 || HIBYTE(wsaData.wVersion) != 2)
+	{
+		WSACleanup();
+		return FALSE;
+	}
 	CchartDlg dlg;
 	m_pMainWnd = &dlg;
 	dlg.DoModal();
-	
 
 	// 由于对话框已关闭，所以将返回 FALSE 以便退出应用程序，
 	//  而不是启动应用程序的消息泵。
@@ -72,5 +70,5 @@ BOOL CchartApp::InitInstance()
 
 CchartApp::~CchartApp()
 {
-    WSACleanup();
+	WSACleanup();
 }

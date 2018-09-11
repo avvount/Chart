@@ -9,10 +9,10 @@ CCustomStatusBar::~CCustomStatusBar(void)
 {
 }
 BEGIN_MESSAGE_MAP(CCustomStatusBar, CStatusBar)
-    ON_WM_CTLCOLOR()
+ON_WM_CTLCOLOR()
 END_MESSAGE_MAP()
 
-HBRUSH CCustomStatusBar::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
+HBRUSH CCustomStatusBar::OnCtlColor(CDC *pDC, CWnd *pWnd, UINT nCtlColor)
 {
     HBRUSH hbr = CStatusBar::OnCtlColor(pDC, pWnd, nCtlColor);
 
@@ -24,6 +24,6 @@ HBRUSH CCustomStatusBar::OnCtlColor(CDC* pDC, CWnd* pWnd, UINT nCtlColor)
 
 void CCustomStatusBar::SetTextColor(COLORREF clrText)
 {
-    m_clrText=clrText;
+    m_clrText = clrText;
     Invalidate();
 }

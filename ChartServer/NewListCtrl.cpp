@@ -31,12 +31,12 @@ void CNewListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
     case CDDS_ITEMPREPAINT: //如果为画ITEM之前就要进行颜色的改变
     {
         COLORREF ClrBk;
-        
+
         if (MapItemColor.Lookup(lplvdr->nmcd.dwItemSpec, ClrBk))
         //// 根据在 SetItemColor(DWORD iItem, COLORREF color) 设置的
         //// ITEM号和COLORREF 在摸板中查找，然后进行颜色赋值。
         {
-            lplvdr->clrTextBk=ClrBk;
+            lplvdr->clrTextBk = ClrBk;
             *pResult = CDRF_DODEFAULT;
         }
         break;
@@ -44,18 +44,16 @@ void CNewListCtrl::OnNMCustomdraw(NMHDR *pNMHDR, LRESULT *pResult)
     }
 }
 
-
 void CNewListCtrl::SetItemColor(DWORD iItem, COLORREF TextBkColor)
 {
     MapItemColor.SetAt(iItem, TextBkColor);
 }
 
-
 //void CNewListCtrl::OnNMClick(NMHDR *pNMHDR, LRESULT *pResult)
 //{
 //    LPNMITEMACTIVATE pNMItemActivate = reinterpret_cast<LPNMITEMACTIVATE>(pNMHDR);
 //    // TODO: 在此添加控件通知处理程序代码
-//    
+//
 //    //SetItemColor(pNMItemActivate->iItem,RGB(0,0,0));
 //    //RedrawItems(pNMItemActivate->iItem,pNMItemActivate->iItem);
 //    *pResult = 0;
