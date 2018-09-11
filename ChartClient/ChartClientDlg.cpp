@@ -170,5 +170,5 @@ void CChartClientDlg::OnBnClickedBtnlogout()
 {
     // TODO: 在此添加控件通知处理程序代码
     WinExec(__argv[0], SW_SHOW);
-    EndDialog(IDOK);
+    exit(0);
 }
