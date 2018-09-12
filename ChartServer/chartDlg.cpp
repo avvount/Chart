@@ -140,6 +140,7 @@ void CchartDlg::OnPaint()
     ResizeList();
     PreDrawLine();
     DrawLine();
+
 }
 
 //当用户拖动最小化窗口时系统调用此函数取得光标
