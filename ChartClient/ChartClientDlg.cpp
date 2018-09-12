@@ -146,7 +146,7 @@ void CChartClientDlg::OnBnClickedBtnsend()
         memset(recvBuf[i],0,sizeof(int) * tfmg.group);
         if(recv(sockClient, recvBuf[i], tfmg.group * sizeof(int), 0)<=0)
         {
-            MessageBox("连接中断");
+            MessageBox("连接中断")
             return;
         }
     }
