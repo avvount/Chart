@@ -16,7 +16,7 @@ sockaddr_in addrSrv;
 // CChartClientDlg 对话框
 
 CChartClientDlg::CChartClientDlg(CWnd *pParent /*=NULL*/)
-    : CDialog(CChartClientDlg::IDD, pParent), m_pdata(NULL)
+: CDialog(CChartClientDlg::IDD, pParent), m_pdata(NULL)
 {
     m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
 }
@@ -31,11 +31,11 @@ void CChartClientDlg::DoDataExchange(CDataExchange *pDX)
 }
 
 BEGIN_MESSAGE_MAP(CChartClientDlg, CDialog)
-ON_WM_PAINT()
-ON_WM_QUERYDRAGICON()
-//}}AFX_MSG_MAP
-ON_BN_CLICKED(IDC_BTNSEND, &CChartClientDlg::OnBnClickedBtnsend)
-ON_BN_CLICKED(IDC_BTNLOGOUT, &CChartClientDlg::OnBnClickedBtnlogout)
+    ON_WM_PAINT()
+    ON_WM_QUERYDRAGICON()
+    //}}AFX_MSG_MAP
+    ON_BN_CLICKED(IDC_BTNSEND, &CChartClientDlg::OnBnClickedBtnsend)
+    ON_BN_CLICKED(IDC_BTNLOGOUT, &CChartClientDlg::OnBnClickedBtnlogout)
 END_MESSAGE_MAP()
 
 // CChartClientDlg 消息处理程序
