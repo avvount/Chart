@@ -52,7 +52,12 @@ void CLoginDlg::OnBnClickedBtnlogin()
     connect(sockClient, (sockaddr *)&addrSrv, sizeof(sockaddr));
     send(sockClient, (char *)&tfmg, sizeof(tfmg), 0);
     bool recvBuf = false;
-    recv(sockClient, (char *)&recvBuf, 1, 0);
+    if (recv(sockClient, (char *)&recvBuf, 1, 0)<=0)
+    {
+        MessageBox("连接异常");
+        return;
+    }
+    
 
     if (recvBuf) //登录成功
     {

@@ -1,7 +1,6 @@
 
 // ChartClientDlg.cpp : 实现文件
 //
-
 #include "stdafx.h"
 #include "ChartClient.h"
 #include "ChartClientDlg.h"
@@ -144,7 +143,12 @@ void CChartClientDlg::OnBnClickedBtnsend()
     for (int i = 0; i < tfmg.quantity; i++)
     {
         recvBuf[i] = new char[sizeof(int) * tfmg.group];
-        recv(sockClient, recvBuf[i], tfmg.group * sizeof(int), 0);
+        memset(recvBuf[i],0,sizeof(int) * tfmg.group);
+        if(recv(sockClient, recvBuf[i], tfmg.group * sizeof(int), 0)<=0)
+        {
+            MessageBox("连接中断");
+            return;
+        }
     }
     m_pdata = (int **)recvBuf;
     m_List.DeleteAllItems();
