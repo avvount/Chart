@@ -42,3 +42,6 @@ ON_MESSAGE(WM_RECVDATA,OnRecvData)
 
 5. 在引发或发出消息的地方使用SendMessage或PostMessage发送消息  
 
+## 类的动态创建  
+
+在头文件中添加`DECLARE_DYNAMIC(class_name)`宏，源文件中添加`IMPLEMENT_DYNCREATE(class_name , base_class_name)`宏。
