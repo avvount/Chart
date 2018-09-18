@@ -44,4 +44,4 @@ ON_MESSAGE(WM_RECVDATA,OnRecvData)
 
 ## 类的动态创建  
 
-在头文件中添加`DECLARE_DYNAMIC(class_name)`宏，源文件中添加`IMPLEMENT_DYNCREATE(class_name , base_class_name)`宏。
+在头文件中添加`DECLARE_DYNCREATE(class_name)`宏，源文件中添加`IMPLEMENT_DYNCREATE(class_name , base_class_name)`宏。
