@@ -55,6 +55,8 @@ ON_MESSAGE(WM_RECVDATA,OnRecvData)
 	{ "keys": ["ctrl+l"], "command": "move", "args": {"by": "characters", "forward": true} },
 	{ "keys": ["ctrl+k"], "command": "move", "args": {"by": "lines", "forward": false} },
 	{ "keys": ["ctrl+j"], "command": "move", "args": {"by": "lines", "forward": true} },
+	{ "keys": ["ctrl+shift+h"], "command": "move", "args": {"by": "words", "forward": false} },
+	{ "keys": ["ctrl+shift+l"], "command": "move", "args": {"by": "word_ends", "forward": true} },
 ]
 ```
 
