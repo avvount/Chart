@@ -45,3 +45,20 @@ ON_MESSAGE(WM_RECVDATA,OnRecvData)
 ## 类的动态创建  
 
 在头文件中添加`DECLARE_DYNCREATE(class_name)`宏，源文件中添加`IMPLEMENT_DYNCREATE(class_name , base_class_name)`宏。
+
+## Sublime快捷键设置  
+
+1. `Ctrl + hjkl `快速移动光标,在首选项->快捷键设置中添加以下代码  
+```json
+[
+	{ "keys": ["ctrl+h"], "command": "move", "args": {"by": "characters", "forward": false} },
+	{ "keys": ["ctrl+l"], "command": "move", "args": {"by": "characters", "forward": true} },
+	{ "keys": ["ctrl+k"], "command": "move", "args": {"by": "lines", "forward": false} },
+	{ "keys": ["ctrl+j"], "command": "move", "args": {"by": "lines", "forward": true} },
+]
+```
+
+2. 开启vim模式
+
+在用户设置中将`Vintage`从`ignored_packages`中删除  
+
