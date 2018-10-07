@@ -6,7 +6,7 @@
         {
             "label": "Debug",
             "type": "shell",
-            "command": "C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\MSBuild.exe",
+            "command": "MSBuild.exe",
             "args": [
                 "${workspaceRoot}/ChartServer/chart.sln",
                 "/p:Configuration=Debug;GenerateFullPaths=true"
@@ -23,7 +23,7 @@
         {
             "label": "Release",
             "type": "shell",
-            "command": "C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\MSBuild.exe",
+            "command": "MSBuild.exe",
             "args": [
                 "${workspaceRoot}/ChartServer/chart.sln",
                 "/p:Configuration=Release;GenerateFullPaths=true"
