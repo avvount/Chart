@@ -1,0 +1,41 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Debug",
+            "type": "shell",
+            "command": "C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\MSBuild.exe",
+            "args": [
+                "${workspaceRoot}/ChartServer/chart.sln",
+                "/p:Configuration=Debug;GenerateFullPaths=true"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        },
+        {
+            "label": "Release",
+            "type": "shell",
+            "command": "C:\\Windows\\Microsoft.NET\\Framework\\v3.5\\MSBuild.exe",
+            "args": [
+                "${workspaceRoot}/ChartServer/chart.sln",
+                "/p:Configuration=Release;GenerateFullPaths=true"
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "silent"
+            },
+            "problemMatcher": "$msCompile"
+        }
+    ]
+}
