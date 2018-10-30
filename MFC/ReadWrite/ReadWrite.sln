@@ -1,0 +1,20 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual Studio 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "ReadWrite", "ReadWrite.vcproj", "{EF93A06B-78B2-4AA8-B572-B04CC7C949AE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{EF93A06B-78B2-4AA8-B572-B04CC7C949AE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{EF93A06B-78B2-4AA8-B572-B04CC7C949AE}.Debug|Win32.Build.0 = Debug|Win32
+		{EF93A06B-78B2-4AA8-B572-B04CC7C949AE}.Release|Win32.ActiveCfg = Release|Win32
+		{EF93A06B-78B2-4AA8-B572-B04CC7C949AE}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
