@@ -56,6 +56,7 @@ public:
     afx_msg void OnCustomCppwrite();
     afx_msg void OnCustomApiread();
 //    afx_msg void OnCustomApiwrite();
+	afx_msg void OnCustomXlsx();
 };
 
 #ifndef _DEBUG  // ReadWriteView.cpp 中的调试版本

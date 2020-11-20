@@ -43,7 +43,7 @@ public:
 private:
     int m_iOccupation;
     CString m_strWorkAddr;
-    bool m_bLike[4];
+    BOOL m_bLike[4];
     CString m_strSalary;
 public:
     afx_msg void OnDot();

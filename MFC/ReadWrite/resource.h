@@ -1,6 +1,6 @@
 //{{NO_DEPENDENCIES}}
-// Microsoft Visual C++ generated include file.
-// Used by ReadWrite.rc
+// Microsoft Visual C++ 生成的包含文件。
+// 供 ReadWrite.rc 使用
 //
 #define IDD_ABOUTBOX                    100
 #define IDR_POPUP_EDIT                  119
@@ -34,13 +34,14 @@
 #define ID_CUSTOM_CPPWRITE              32787
 #define ID_CUSTOM_APIREAD               32788
 #define ID_CUSTOM_APIWRITE              32789
+#define ID_CUSTOM_XLSX                  32790
 
 // Next default values for new objects
 // 
 #ifdef APSTUDIO_INVOKED
 #ifndef APSTUDIO_READONLY_SYMBOLS
 #define _APS_NEXT_RESOURCE_VALUE        311
-#define _APS_NEXT_COMMAND_VALUE         32790
+#define _APS_NEXT_COMMAND_VALUE         32791
 #define _APS_NEXT_CONTROL_VALUE         1000
 #define _APS_NEXT_SYMED_VALUE           310
 #endif

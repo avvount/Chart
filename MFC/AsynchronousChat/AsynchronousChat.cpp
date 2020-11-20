@@ -10,13 +10,11 @@
 #define new DEBUG_NEW
 #endif
 
-
 // CAsynchronousChatApp
 
 BEGIN_MESSAGE_MAP(CAsynchronousChatApp, CWinAppEx)
-	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
+ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
 END_MESSAGE_MAP()
-
 
 // CAsynchronousChatApp 构造
 
@@ -26,11 +24,9 @@ CAsynchronousChatApp::CAsynchronousChatApp()
 	// 将所有重要的初始化放置在 InitInstance 中
 }
 
-
 // 唯一的一个 CAsynchronousChatApp 对象
 
 CAsynchronousChatApp theApp;
-
 
 // CAsynchronousChatApp 初始化
 
@@ -38,22 +34,22 @@ BOOL CAsynchronousChatApp::InitInstance()
 {
 	CWinAppEx::InitInstance();
 
-    WORD wVersionRequested;
-    WSADATA wsaData;
-    int err;
+	WORD wVersionRequested;
+	WSADATA wsaData;
+	int err;
 
-    wVersionRequested=MAKEWORD(2,2);
-    err=WSAStartup(wVersionRequested,&wsaData);
-    if (err)
-    {
-        return false;
-    }
+	wVersionRequested = MAKEWORD(2, 2);
+	err = WSAStartup(wVersionRequested, &wsaData);
+	if (err)
+	{
+		return false;
+	}
 
-    if (2!=LOBYTE(wsaData.wVersion)||2!=HIBYTE(wsaData.wVersion))
-    {
-        WSACleanup();
-        return false;
-    }
+	if (2 != LOBYTE(wsaData.wVersion) || 2 != HIBYTE(wsaData.wVersion))
+	{
+		WSACleanup();
+		return false;
+	}
 
 	// 标准初始化
 	// 如果未使用这些功能并希望减小
@@ -85,5 +81,5 @@ BOOL CAsynchronousChatApp::InitInstance()
 
 CAsynchronousChatApp::~CAsynchronousChatApp(void)
 {
-    WSACleanup();
+	WSACleanup();
 }

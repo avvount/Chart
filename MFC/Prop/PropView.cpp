@@ -181,11 +181,20 @@ void CPropView::OnEllipse()
     m_nDrawType=4;
 }
 
+void func(int x)
+{
+	TRACE("%d\t",x);
+}
 void CPropView::OnLButtonDown(UINT nFlags, CPoint point)
 {
     // TODO: 在此添加消息处理程序代码和/或调用默认值
     m_ptOrigin=point;
-    
+	std::vector<int> v;
+	for (int i = 0;i < 10; i++)
+	{
+		v.push_back(i);
+	}
+	for_each(v.begin(),v.end(),[](int x){TRACE("%d\t",x);});
     CView::OnLButtonDown(nFlags, point);
 }
 

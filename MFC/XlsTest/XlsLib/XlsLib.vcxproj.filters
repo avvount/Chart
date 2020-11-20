@@ -1,0 +1,302 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="源文件">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="头文件">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="资源文件">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="xlslib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\biffsection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\blank.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\boolean.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\cbridge.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\cell.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\colinfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\colors.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\common.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\continue.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\datast.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\docsumminfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\err.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\extformat.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\font.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\format.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\formtags.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\formula.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\formula_cell.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\formula_const.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\formula_estimate.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\formula_expr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\globalrec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\HPSF.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\index.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\label.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\merged.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\note.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\number.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\range.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\recdef.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\record.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\rectypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\row.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\sheetrec.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\summinfo.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\tostr.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\unit.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="xlslib\workbook.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="oledoc\binfile.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="oledoc\oledoc.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="oledoc\olefs.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="oledoc\oleprop.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\overnew.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\stringtok.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\systype.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\timespan.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\xls_poppack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\xls_pshpack1.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\xls_pshpack2.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\xls_pshpack4.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\xlstypes.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="common\xlsys.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="ac-config.win32.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="xlslib\assert_assist.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\blank.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\boolean.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\cbridge.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\cell.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\colinfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\colors.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\continue.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\datast.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\docsumminfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\err.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\extformat.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\font.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\format.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\formula.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\formula_cell.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\formula_estimate.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\formula_expr.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\globalrec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\HPSF.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\index.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\label.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\merged.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\note.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\number.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\range.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\recdef.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\record.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\row.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\sheetrec.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\summinfo.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\unit.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="xlslib\workbook.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="oledoc\binfile.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="oledoc\oledoc.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="oledoc\olefs.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="oledoc\oleprop.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="common\overnew.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Source.def">
+      <Filter>源文件</Filter>
+    </None>
+  </ItemGroup>
+</Project>

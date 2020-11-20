@@ -11,6 +11,9 @@
 #include <iostream>
 #include <cmath>
 #include <vector>
+#include "SimpleXlsx\Xlsx\Workbook.h"
+#include "SimpleXlsx\Xlsx\Worksheet.h"
+using namespace SimpleXlsx;
 using namespace std;
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -32,6 +35,7 @@ ON_COMMAND(ID_CUSTOM_CPPREAD, &CReadWriteView::OnCustomCppread)
 ON_COMMAND(ID_CUSTOM_CPPWRITE, &CReadWriteView::OnCustomCppwrite)
 ON_COMMAND(ID_CUSTOM_APIREAD, &CReadWriteView::OnCustomApiread)
 //ON_COMMAND(ID_CUSTOM_APIWRITE, &CReadWriteView::OnCustomApiwrite)
+ON_COMMAND(ID_CUSTOM_XLSX, &CReadWriteView::OnCustomXlsx)
 END_MESSAGE_MAP()
 
 // CReadWriteView 构造/析构
@@ -256,3 +260,42 @@ void CReadWriteView::OnCustomApiread()
 //    // TODO: 在此添加命令处理程序代码
 //    MessageBox("视图类");
 //}
+
+
+void CReadWriteView::OnCustomXlsx()
+{
+	// TODO: 在此添加命令处理程序代码
+	CWorkbook wb;
+	
+	int t1 = GetTickCount();
+	for (size_t j = 0; j < 1; j++)
+	{
+		CWorksheet & sheet1 = wb.AddSheet(L"表一");
+		for (size_t i = 0; i < 10000; i++)
+		{
+			sheet1.BeginRow();
+			sheet1.AddCell("");
+			sheet1.AddCell("1");
+			sheet1.AddCell("2");
+			sheet1.AddCell(L"三");
+			sheet1.AddCell(L"四");
+			sheet1.AddCell("");
+			sheet1.AddCell("1");
+			sheet1.AddCell("2");
+			sheet1.AddCell(L"三");
+			sheet1.AddCell(L"四");
+			sheet1.EndRow();
+		}
+	}
+	
+	if (wb.Save("C:/Users/avvount/Desktop/wb.xlsx"))
+	{
+		int t2 = GetTickCount();
+		TRACE("时间---------%d", t2 - t1);
+	}
+	else
+	{
+		ASSERT(0);
+	}
+	
+}
