@@ -16,7 +16,7 @@ public:
 
 using functon_pointer_type = int (demo::*)(int, int);
 
-void main()
+int main()
 {
     /* int (*p)(int,int);
     int a=0;
@@ -31,5 +31,5 @@ void main()
     int a = 0;
     int b = 3;
     demo t;
-    (t.*p)(a, b);
+    return (t.*p)(a, b);
 }
